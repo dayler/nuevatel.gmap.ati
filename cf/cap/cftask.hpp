@@ -22,7 +22,7 @@ class SetSessionTask : public Task {
     DialogMap *dialogMap;
 
     /** The putBlockQueue. */
-    PutBlockQueue *putBlockQueue;
+    PutGBlockQueue *putBlockQueue;
 
 public:
 
@@ -31,7 +31,7 @@ public:
      * @param *dialogMap DialogMap
      * @param *putBlockQueue PutBlockQueue
      */
-    SetSessionTask(DialogMap *dialogMap, PutBlockQueue *putBlockQueue) {
+    SetSessionTask(DialogMap *dialogMap, PutGBlockQueue *putBlockQueue) {
         this->dialogMap=dialogMap;
         this->putBlockQueue=putBlockQueue;
     }
@@ -122,7 +122,7 @@ class TestSessionTask : public Task {
     DialogMap *dialogMap;
 
     /** The putBlockQueue. */
-    PutBlockQueue *putBlockQueue;
+    PutGBlockQueue *putBlockQueue;
 
 public:
 
@@ -131,7 +131,7 @@ public:
      * @param *dialogMap DialogMap
      * @param *putBlockQueue PutBlockQueue
      */
-    TestSessionTask(DialogMap *dialogMap, PutBlockQueue *putBlockQueue) {
+    TestSessionTask(DialogMap *dialogMap, PutGBlockQueue *putBlockQueue) {
         this->dialogMap=dialogMap;
         this->putBlockQueue=putBlockQueue;
     }

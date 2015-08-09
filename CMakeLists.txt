@@ -20,16 +20,21 @@ set(SOURCE_FILES
     base/socket.hpp
     base/thread.hpp
     base/timer.hpp
+    base/utils.hpp
     cf/cap/appconn/cfie.hpp
     cf/cap/appconn/cfmessage.hpp
     cf/cap/block.hpp
-    cf/cap/capapp.hpp
     cf/cap/capdialog.hpp
     cf/cap/cftask.hpp
     cf/cap/dialog.hpp
-    main.cpp
-    Makefile)
+    cf/cap/gmapapp.hpp
+    gmap/gblocksm.hpp
+    gmap/gmapconn.hpp
+    gmap/gblock
+    properties/gmap.ati.10.properties
+    properties/start_gmap.ati.10.sh
+    main.cpp)
 
-include_directories("/Users/asalazar/dev/cpp/ulcm/include")
+    include_directories("/Users/asalazar/dev/cpp/ulcm/include")
 
-add_executable(trunk ${SOURCE_FILES})
+add_executable(trunk ${SOURCE_FILES} gmap/gblock.hpp)

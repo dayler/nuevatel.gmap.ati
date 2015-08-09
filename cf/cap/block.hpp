@@ -9,8 +9,13 @@
 #include "../../base/cqueue.hpp"
 #include <string>
 #include <sstream>
+#include <gmap.h>
+
+#include "../../base/utils.hpp"
 
 #define CL_SVC_CLASS_0 0
+
+using namespace std;
 
 /**
  * <p>The Address class.</p>
@@ -110,6 +115,12 @@ public:
         toSemiOctet(addr, ch + 1, len);
         len += 1;
     }
+    // TODO
+//        static void getAddress(const std::string &str, const unsigned char &toa, unsigned char *addr, int &len) {
+//        addr[0]=toa;
+//        getSemiOctet(str, &addr[1], len);
+//        ++len;
+//    }
 
     /**
      * Returns the ton.
@@ -398,217 +409,217 @@ char Number::NPI_ISDN = 0x10;
 char Number::NPI_DNP = 0x30;
 char Number::NPI_TNP = 0x40;
 
-/**
- * <p>The CallingPartyNumber class. See Q.763</p>
- * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
- *
- * @author Eduardo Marin
- * @version 2.0
- */
-class CallingPartyNumber : public Number
-{
-public:
+///**
+// * <p>The CallingPartyNumber class. See Q.763</p>
+// * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
+// *
+// * @author Eduardo Marin
+// * @version 2.0
+// */
+//class CallingPartyNumber : public Number
+//{
+//public:
+//
+//    /* constants */
+//    static char NI;
+//    /* ni 1 bit 7 */
+//    static char NI_COMPLETE;
+//    static char NI_INCOMPLETE;
+//
+//    static char APRI;
+//    /* apri 2 bit 2 and 3 */
+//    static char APRI_PRESENTATION_ALLOWED;
+//    static char APRI_PRESENTATION_RESTRICTED;
+//    static char APRI_ADDRESS_NA;
+//
+//    static char SI;
+//    /* apri 2 bit 0 and 1 */
+//    static char SI_USER_PROVIDED_NV;
+//    static char SI_USER_PROVIDED_VP;
+//    static char SI_USER_PROVIDED_VF;
+//    static char SI_NETWORK_PROVIDED;
+//
+//private:
+//
+//    /* private variables */
+//    char ni;
+//    char apri;
+//    char si;
+//
+//public:
+//
+//    /**
+//     * Creates a new instance of CallingPartyNumber.
+//     * @param &nai const char
+//     * @param &npi const char
+//     * @param &addr const std::string
+//     * @param &ni const char
+//     * @param &apri const char
+//     * @param &si const char
+//     */
+//    CallingPartyNumber(const char &nai, const char &npi, const std::string &addr, const char &ni, const char &apri, const char &si) : Number(nai, npi, addr)
+//    {
+//        this->ni = ni;
+//        this->apri = apri;
+//        this->si = si;
+//    }
+//
+//    /**
+//     * Creates a new instance of CallingPartyNumber.
+//     * @param *nbr char
+//     * @param &len const int
+//     */
+//    CallingPartyNumber(char *nbr, const int &len) : Number(nbr, len)
+//    {
+//        if (len > 1)
+//        {
+//            ni = nbr[1] & NI;
+//            apri = nbr[1] & APRI;
+//            si = nbr[1] & SI;
+//        }
+//        else
+//        {
+//            ni = 0;
+//            apri = 0;
+//            si = 0;
+//        }
+//    }
+//
+//    virtual ~CallingPartyNumber()
+//    {
+//    }
+//
+//    /**
+//     * Returns the callingPartyNumber.
+//     * @param *ch char
+//     * @param &len int
+//     */
+//    void getCallingPartyNumber(char *ch, int &len)
+//    {
+//        Number::getNumber(ch, len);
+//        ch[1] |= ni & NI;
+//        ch[1] |= apri & APRI;
+//        ch[1] |= si & SI;
+//    }
+//
+//    /**
+//     * Returns the ni.
+//     * @return char
+//     */
+//    char getNI()
+//    {
+//        return ni;
+//    }
+//
+//    /**
+//     * Returns the apri.
+//     * @return char
+//     */
+//    char getAPRI()
+//    {
+//        return apri;
+//    }
+//
+//    /**
+//     * Returns the si.
+//     * @return char
+//     */
+//    char getSI()
+//    {
+//        return si;
+//    }
+//};
+//
+//char CallingPartyNumber::NI = 0x80;
+//
+//char CallingPartyNumber::NI_COMPLETE = 0x0;
+//char CallingPartyNumber::NI_INCOMPLETE = 0x80;
+//
+//char CallingPartyNumber::APRI = 0xc;
+//
+//char CallingPartyNumber::APRI_PRESENTATION_ALLOWED = 0x0;
+//char CallingPartyNumber::APRI_PRESENTATION_RESTRICTED = 0x4;
+//char CallingPartyNumber::APRI_ADDRESS_NA = 0x8;
+//
+//char CallingPartyNumber::SI = 0x3;
+//
+//char CallingPartyNumber::SI_USER_PROVIDED_NV = 0x0;
+//char CallingPartyNumber::SI_USER_PROVIDED_VP = 0x1;
+//char CallingPartyNumber::SI_USER_PROVIDED_VF = 0x2;
+//char CallingPartyNumber::SI_NETWORK_PROVIDED = 0x3;
+//
+///**
+// * <p>The CalledPartyNumber class. See Q.763</p>
+// * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
+// *
+// * @author Eduardo Marin
+// * @version 2.0
+// */
+//class CalledPartyNumber : public Number
+//{
+//public:
+//
+//    /* constants */
+//    static char INN;
+//    /* inn 1 bit 7 */
+//    static char INN_RINNA;
+//    static char INN_RINNNA;
+//
+//private:
+//
+//    /* private variables */
+//    char inn;
+//
+//public:
+//
+//    /**
+//     * Creates a new instance of CalledPartyNumber.
+//     * @param &nai const char
+//     * @param &npi const char
+//     * @param &addr const std::string
+//     * @param &inn const char
+//     */
+//    CalledPartyNumber(const char &nai, const char &npi, const std::string &addr, const char &inn) : Number(nai, npi, addr)
+//    {
+//        this->inn = inn;
+//    }
+//
+//    /**
+//     * Creates a new instance of CalledPartyNumber.
+//     * @param *nbr char
+//     * @param &len const int
+//     */
+//    CalledPartyNumber(char *nbr, const int &len) : Number(nbr, len)
+//    {
+//        if (len > 1) inn = nbr[1] & INN;
+//        else inn = 0;
+//    }
+//
+//    /**
+//     * Returns the calledPartyNumber.
+//     * @param *ch char
+//     * @param &len int
+//     */
+//    void getCalledPartyNumber(char *ch, int &len)
+//    {
+//        Number::getNumber(ch, len);
+//        ch[1] |= inn & INN;
+//    }
+//
+//    /**
+//     * Returns the inn.
+//     * @return char
+//     */
+//    char getINN()
+//    {
+//        return inn;
+//    }
+//};
 
-    /* constants */
-    static char NI;
-    /* ni 1 bit 7 */
-    static char NI_COMPLETE;
-    static char NI_INCOMPLETE;
-
-    static char APRI;
-    /* apri 2 bit 2 and 3 */
-    static char APRI_PRESENTATION_ALLOWED;
-    static char APRI_PRESENTATION_RESTRICTED;
-    static char APRI_ADDRESS_NA;
-
-    static char SI;
-    /* apri 2 bit 0 and 1 */
-    static char SI_USER_PROVIDED_NV;
-    static char SI_USER_PROVIDED_VP;
-    static char SI_USER_PROVIDED_VF;
-    static char SI_NETWORK_PROVIDED;
-
-private:
-
-    /* private variables */
-    char ni;
-    char apri;
-    char si;
-
-public:
-
-    /**
-     * Creates a new instance of CallingPartyNumber.
-     * @param &nai const char
-     * @param &npi const char
-     * @param &addr const std::string
-     * @param &ni const char
-     * @param &apri const char
-     * @param &si const char
-     */
-    CallingPartyNumber(const char &nai, const char &npi, const std::string &addr, const char &ni, const char &apri, const char &si) : Number(nai, npi, addr)
-    {
-        this->ni = ni;
-        this->apri = apri;
-        this->si = si;
-    }
-
-    /**
-     * Creates a new instance of CallingPartyNumber.
-     * @param *nbr char
-     * @param &len const int
-     */
-    CallingPartyNumber(char *nbr, const int &len) : Number(nbr, len)
-    {
-        if (len > 1)
-        {
-            ni = nbr[1] & NI;
-            apri = nbr[1] & APRI;
-            si = nbr[1] & SI;
-        }
-        else
-        {
-            ni = 0;
-            apri = 0;
-            si = 0;
-        }
-    }
-
-    virtual ~CallingPartyNumber()
-    {
-    }
-
-    /**
-     * Returns the callingPartyNumber.
-     * @param *ch char
-     * @param &len int
-     */
-    void getCallingPartyNumber(char *ch, int &len)
-    {
-        Number::getNumber(ch, len);
-        ch[1] |= ni & NI;
-        ch[1] |= apri & APRI;
-        ch[1] |= si & SI;
-    }
-
-    /**
-     * Returns the ni.
-     * @return char
-     */
-    char getNI()
-    {
-        return ni;
-    }
-
-    /**
-     * Returns the apri.
-     * @return char
-     */
-    char getAPRI()
-    {
-        return apri;
-    }
-
-    /**
-     * Returns the si.
-     * @return char
-     */
-    char getSI()
-    {
-        return si;
-    }
-};
-
-char CallingPartyNumber::NI = 0x80;
-
-char CallingPartyNumber::NI_COMPLETE = 0x0;
-char CallingPartyNumber::NI_INCOMPLETE = 0x80;
-
-char CallingPartyNumber::APRI = 0xc;
-
-char CallingPartyNumber::APRI_PRESENTATION_ALLOWED = 0x0;
-char CallingPartyNumber::APRI_PRESENTATION_RESTRICTED = 0x4;
-char CallingPartyNumber::APRI_ADDRESS_NA = 0x8;
-
-char CallingPartyNumber::SI = 0x3;
-
-char CallingPartyNumber::SI_USER_PROVIDED_NV = 0x0;
-char CallingPartyNumber::SI_USER_PROVIDED_VP = 0x1;
-char CallingPartyNumber::SI_USER_PROVIDED_VF = 0x2;
-char CallingPartyNumber::SI_NETWORK_PROVIDED = 0x3;
-
-/**
- * <p>The CalledPartyNumber class. See Q.763</p>
- * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
- *
- * @author Eduardo Marin
- * @version 2.0
- */
-class CalledPartyNumber : public Number
-{
-public:
-
-    /* constants */
-    static char INN;
-    /* inn 1 bit 7 */
-    static char INN_RINNA;
-    static char INN_RINNNA;
-
-private:
-
-    /* private variables */
-    char inn;
-
-public:
-
-    /**
-     * Creates a new instance of CalledPartyNumber.
-     * @param &nai const char
-     * @param &npi const char
-     * @param &addr const std::string
-     * @param &inn const char
-     */
-    CalledPartyNumber(const char &nai, const char &npi, const std::string &addr, const char &inn) : Number(nai, npi, addr)
-    {
-        this->inn = inn;
-    }
-
-    /**
-     * Creates a new instance of CalledPartyNumber.
-     * @param *nbr char
-     * @param &len const int
-     */
-    CalledPartyNumber(char *nbr, const int &len) : Number(nbr, len)
-    {
-        if (len > 1) inn = nbr[1] & INN;
-        else inn = 0;
-    }
-
-    /**
-     * Returns the calledPartyNumber.
-     * @param *ch char
-     * @param &len int
-     */
-    void getCalledPartyNumber(char *ch, int &len)
-    {
-        Number::getNumber(ch, len);
-        ch[1] |= inn & INN;
-    }
-
-    /**
-     * Returns the inn.
-     * @return char
-     */
-    char getINN()
-    {
-        return inn;
-    }
-};
-
-char CalledPartyNumber::INN = 0x80;
-
-char CalledPartyNumber::INN_RINNA = 0x0;
-char CalledPartyNumber::INN_RINNNA = 0x80;
+//char CalledPartyNumber::INN = 0x80;
+//
+//char CalledPartyNumber::INN_RINNA = 0x0;
+//char CalledPartyNumber::INN_RINNNA = 0x80;
 
 /**
  * <p>The GenericNumber class. See Q.763</p>
@@ -617,75 +628,75 @@ char CalledPartyNumber::INN_RINNNA = 0x80;
  * @author Eduardo Marin
  * @version 2.0
  */
-class GenericNumber : public CallingPartyNumber
-{
-public:
-
-    /* constants */
-    static char NQI_RESERVED_DIALED_DIGITS;
-    static char NQI_ADDITIONAL_CALLED_NUMBER;
-    static char NQI_ADDITIONAL_CONNECTED_NUMBER;
-    static char NQI_ADDITIONAL_CALLING_PARTY_NUMBER;
-
-private:
-
-    /* private variables */
-    char nqi;
-
-public:
-
-    /**
-     * Creates a new instance of GenericNumber.
-     * @param &nai const char
-     * @param &npi const char
-     * @param &addr const std::string
-     * @param &ni const char
-     * @param &apri const char
-     * @param &si const char
-     * @param &nqi const char
-     */
-    GenericNumber(const char &nai, const char &npi, const std::string &addr, const char &ni, const char &apri, const char &si, const char &nqi) : CallingPartyNumber(nai, npi, addr, ni, apri, si)
-    {
-        this->nqi = nqi;
-    }
-
-    /**
-     * Creates a new instance of GenericNumber.
-     * @param *nbr char
-     * @param &len const int
-     */
-    GenericNumber(char *nbr, const int &len) : CallingPartyNumber(nbr + 1, len - 1)
-    {
-        if (len > 0) nqi = nbr[0];
-        else nqi = 0;
-    }
-
-    /**
-     * Returns the genericNumber.
-     * @param *ch char
-     * @param &len int
-     */
-    void getGenericNumber(char *ch, int &len)
-    {
-        ch[0] = nqi;
-        CallingPartyNumber::getCallingPartyNumber(ch + 1, len);
-        len++;
-    }
-
-    /**
-     * Returns the nqi.
-     * @return char
-     */
-    char getNQI()
-    {
-        return nqi;
-    }
-};
-
-char GenericNumber::NQI_RESERVED_DIALED_DIGITS = 0x0;
-char GenericNumber::NQI_ADDITIONAL_CALLED_NUMBER = 0x1;
-char GenericNumber::NQI_ADDITIONAL_CONNECTED_NUMBER = 0x5;
-char GenericNumber::NQI_ADDITIONAL_CALLING_PARTY_NUMBER = 0x6;
+//class GenericNumber : public CallingPartyNumber
+//{
+//public:
+//
+//    /* constants */
+//    static char NQI_RESERVED_DIALED_DIGITS;
+//    static char NQI_ADDITIONAL_CALLED_NUMBER;
+//    static char NQI_ADDITIONAL_CONNECTED_NUMBER;
+//    static char NQI_ADDITIONAL_CALLING_PARTY_NUMBER;
+//
+//private:
+//
+//    /* private variables */
+//    char nqi;
+//
+//public:
+//
+//    /**
+//     * Creates a new instance of GenericNumber.
+//     * @param &nai const char
+//     * @param &npi const char
+//     * @param &addr const std::string
+//     * @param &ni const char
+//     * @param &apri const char
+//     * @param &si const char
+//     * @param &nqi const char
+//     */
+//    GenericNumber(const char &nai, const char &npi, const std::string &addr, const char &ni, const char &apri, const char &si, const char &nqi) : CallingPartyNumber(nai, npi, addr, ni, apri, si)
+//    {
+//        this->nqi = nqi;
+//    }
+//
+//    /**
+//     * Creates a new instance of GenericNumber.
+//     * @param *nbr char
+//     * @param &len const int
+//     */
+//    GenericNumber(char *nbr, const int &len) : CallingPartyNumber(nbr + 1, len - 1)
+//    {
+//        if (len > 0) nqi = nbr[0];
+//        else nqi = 0;
+//    }
+//
+//    /**
+//     * Returns the genericNumber.
+//     * @param *ch char
+//     * @param &len int
+//     */
+//    void getGenericNumber(char *ch, int &len)
+//    {
+//        ch[0] = nqi;
+//        CallingPartyNumber::getCallingPartyNumber(ch + 1, len);
+//        len++;
+//    }
+//
+//    /**
+//     * Returns the nqi.
+//     * @return char
+//     */
+//    char getNQI()
+//    {
+//        return nqi;
+//    }
+//};
+//
+//char GenericNumber::NQI_RESERVED_DIALED_DIGITS = 0x0;
+//char GenericNumber::NQI_ADDITIONAL_CALLED_NUMBER = 0x1;
+//char GenericNumber::NQI_ADDITIONAL_CONNECTED_NUMBER = 0x5;
+//char GenericNumber::NQI_ADDITIONAL_CALLING_PARTY_NUMBER = 0x6;
 
 /**
  * <p>The GenericNumber class. See Q.850</p>
@@ -1014,13 +1025,13 @@ static SccpNumberingPlan getNumberingPlan(const char &ch)
 }
 
 /**
- * <p>The Block class.</p>
+ * <p>The GBlock class.</p>
  * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
  *
  * @author Eduardo Marin
  * @version 2.0
  */
-class Block
+class GBlock
 {
     /* private variables */
     Dialog *dialog;
@@ -1030,10 +1041,10 @@ protected:
     /**
      * Gblock Map
      */
-    gblock_t* gb;
+    gblock_t gb;
 
     /**
-     * Creates a new instance of Block.
+     * Creates a new instance of GBlock.
      * @param *dialog Dialog
      * @param &bitMask const unsigned char
      * @param &serviceType const CapServiceType
@@ -1042,37 +1053,38 @@ protected:
      * @param &invokeId const short
      * @param &linkedId const short
      */
-    Block(Dialog *dialog,
+    GBlock(Dialog *dialog,
           const unsigned char &bitMask,
-          const CapServiceType &serviceType,
+          const ServiceType &serviceType,
           const int &serviceMsg,
           const unsigned short &applicationId,
           const short &invokeId,
           const short &linkedId)
     {
         this->dialog = dialog;
-        capBlock.bit_mask = bitMask;
-        capBlock.serviceType = serviceType;
-        capBlock.serviceMsg = serviceMsg;
-        capBlock.applicationId = applicationId;
-        capBlock.invokeId = invokeId;
-        capBlock.linkedId = linkedId;
+        gb.bit_mask = bitMask;
+        gb.serviceType = serviceType;
+        gb.serviceMsg = serviceMsg;
+        gb.applicationId = applicationId;
+        gb.invokeId = invokeId;
+        gb.linkedId = linkedId;
     }
 
 public:
 
-    virtual ~Block()
+    virtual ~GBlock()
     {
+        // No op
     }
 
     /**
      * Returns the capBlock.
      * @return *CapBlock
      */
-    CapBlock* getCapBlock()
+    gblock_t* getGBlock()
     {
-        capBlock.dialogId = dialog->getDialogId();
-        return &capBlock;
+        gb.dialogId = dialog->getDialogId();
+        return &gb;
     }
 
     /**
@@ -1088,140 +1100,188 @@ public:
 /**
  * The PutBlockQueue abstract class.
  */
-class PutBlockQueue : public Thread
+class PutGBlockQueue : public Thread
 {
 protected:
 
     /** The blockQueue. */
-    Queue<Block> blockQueue;
+    Queue<GBlock> blockQueue;
 
 public:
 
     /**
      * Creates a new instance of PutBlockQueue.
      */
-    PutBlockQueue()
+    PutGBlockQueue()
     {
+        // No op
     }
 
-    virtual ~PutBlockQueue()
+    virtual ~PutGBlockQueue()
     {
+        // No op
     }
 
     /**
      * Pushes a block.
-     * @param *block Block
+     * @param *block GBlock
      */
-    void push(Block *block)
+    void push(GBlock *block)
     {
         blockQueue.push(block);
     }
 };
-
+/****************************************/
+/* Definition of GBlock implementations */
+/****************************************/
 /**
- * The ActivityTestReqBlock class.
+ * <p>The OpenReqBlock class.</p>
  */
-class ActivityTestReqBlock : public Block
+class OpenReqBlock : public GBlock
+{
+    /* private variables */
+    ObjectID *objectId;
+    unsigned char localSSN;
+    unsigned int localPC;
+    std::string localMSISDN;
+    unsigned char localMSISDNType;
+    unsigned char remoteSSN;
+    unsigned int remotePC;
+    std::string remoteMSISDN;
+    unsigned char remoteMSISDNType;
+
+public:
+
+    /**
+     * Creates a new instance of OpenReqBlock.
+     * @param *dialog Dialog
+     * @param *objectId ObjectID
+     * @param &localSSN const unsigned char
+     * @param &localPC const unsigned int
+     * @param &localMSISDN const std::string
+     * @param &localMSISDNType const unsigned char
+     * @param &remoteSSN const unsigned char
+     * @param &remotePC const unsigned int
+     * @param &remoteMSISDN const std::string
+     * @param &remoteMSISDNType const unsigned char
+     */
+    OpenReqBlock(Dialog *dialog,
+                 ObjectID *objectId,
+                 const unsigned char &localSSN,
+                 const unsigned int &localPC,
+                 const std::string &localMSISDN,
+                 const unsigned char &localMSISDNType,
+                 const unsigned char &remoteSSN,
+                 const unsigned int &remotePC,
+                 const std::string &remoteMSISDN,
+                 const unsigned char &remoteMSISDNType) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_OPEN, 0, -1)
+    {
+        this->objectId = objectId;
+        this->localSSN = localSSN;
+        this->localPC = localPC;
+        this->localMSISDN = localMSISDN;
+        this->localMSISDNType = localMSISDNType;
+        this->remoteSSN = remoteSSN;
+        this->remotePC = remotePC;
+        this->remoteMSISDN = remoteMSISDN;
+        this->remoteMSISDNType = remoteMSISDNType;
+    }
+
+    gblock_t* getGBlock()
+    {
+        gblock_t *gb = GBlock::getGBlock();
+        gb->parameter.openArg.bit_mask = MAP_OpenArg_originatingAddress_present;
+        memcpy(&gb->parameter.openArg.applicationContext, objectId, sizeof (ObjectID));
+        // originatingAddress
+        gb->parameter.openArg.originatingAddress.bit_mask = MAP_SccpAddr_gt_present;
+        gb->parameter.openArg.originatingAddress.routingIndicator = routeOnGt;
+        gb->parameter.openArg.originatingAddress.ssn = localSSN;
+        gb->parameter.openArg.originatingAddress.pointCode = localPC;
+        gb->parameter.openArg.originatingAddress.gt.bit_mask = MAP_SccpAddr_gt_numberingPlan_present;
+        gb->parameter.openArg.originatingAddress.gt.natureOfAddress = getNatureOfAddress(localMSISDNType);
+        gb->parameter.openArg.originatingAddress.gt.numberingPlan = getNumberingPlan(localMSISDNType);
+        int tmpLocalLen = 32;
+        unsigned char tmpLocalMSISDN[tmpLocalLen];
+        getOctet(localMSISDN, tmpLocalMSISDN, tmpLocalLen);
+        gb->parameter.openArg.originatingAddress.gt.msisdnLength = tmpLocalLen;
+        memcpy(gb->parameter.openArg.originatingAddress.gt.msisdn, tmpLocalMSISDN, tmpLocalLen);
+        gb->parameter.openArg.originatingAddress.gt.gtIndicator = 4;
+        gb->parameter.openArg.originatingAddress.gt.translationType = 0;
+
+        // destinationAddress
+        gb->parameter.openArg.destinationAddress.bit_mask = MAP_SccpAddr_gt_present;
+        gb->parameter.openArg.destinationAddress.routingIndicator = routeOnGt;
+        gb->parameter.openArg.destinationAddress.ssn = remoteSSN;
+        gb->parameter.openArg.destinationAddress.pointCode = remotePC;
+        gb->parameter.openArg.destinationAddress.gt.bit_mask = MAP_SccpAddr_gt_numberingPlan_present;
+        gb->parameter.openArg.destinationAddress.gt.natureOfAddress = getNatureOfAddress(remoteMSISDNType);
+        gb->parameter.openArg.destinationAddress.gt.numberingPlan = getNumberingPlan(remoteMSISDNType);
+        int tmpRemoteLen = 32;
+        unsigned char tmpRemoteMSISDN[tmpRemoteLen];
+        getOctet(remoteMSISDN, tmpRemoteMSISDN, tmpRemoteLen);
+        gb->parameter.openArg.destinationAddress.gt.msisdnLength = tmpRemoteLen;
+        memcpy(gb->parameter.openArg.destinationAddress.gt.msisdn, tmpRemoteMSISDN, tmpRemoteLen);
+        gb->parameter.openArg.destinationAddress.gt.gtIndicator = 4;
+        gb->parameter.openArg.destinationAddress.gt.translationType = 0;
+        return gb;
+    }
+};
+/**
+ * <p>The OpenResBlock class.</p>
+ */
+class OpenResBlock : public GBlock
+{
+    /* private variables */
+    DialogResult result;
+
+public:
+
+    /**
+     * Creates a new instance of OpenResBlock.
+     * @param *dialog Dialog
+     * @param &result DialogResult
+     */
+    OpenResBlock(Dialog *dialog,
+                 const DialogResult &result) : GBlock(dialog, gblock_t_parameter_present, GMAP_RSP, GMAP_OPEN, 0, -1)
+    {
+        this->result = result;
+    }
+
+    gblock_t* getGBlock()
+    {
+        gblock_t *gb = GBlock::getGBlock();
+        gb->parameter.openRes.bit_mask = 0;
+        gb->parameter.openRes.result = result;
+        return gb;
+    }
+};
+/**
+ * <p>The DelimiterReqBlock class.</p>
+ */
+class DelimiterReqBlock : public GBlock
 {
 public:
 
     /**
-     * Creates a new instance of ActivityTestReqBlock.
+     * Creates a new instance of DelimiterReqBlock.
      * @param *dialog Dialog
-     * @param &invokeId const short
      */
-    ActivityTestReqBlock(Dialog *dialog, const short &invokeId) : Block(dialog, 0, capReq, CAP_ACTIVITY_TEST, 0, invokeId, -1)
+    DelimiterReqBlock(Dialog *dialog) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_DELIMITER, 0, -1)
     {
+        // No op
+    }
+
+    gblock_t* getGBlock()
+    {
+        gblock_t *gb = GBlock::getGBlock();
+        gb->parameter.delimiter.qualityOfService = CL_SVC_CLASS_0;
+        return gb;
     }
 };
-
 /**
- * The ApplyChargingGPRSReqBlock class.
+ * <p>The CloseReqBlock class.</p>
  */
-class ApplyChargingGPRSReqBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of ApplyChargingGPRSReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     * @param &maxTransferredVolume const unsigned int
-     * @param &maxElapsedTime const unsigned int
-     */
-    ApplyChargingGPRSReqBlock(Dialog *dialog, const short &invokeId, const unsigned int &maxTransferredVolume, const unsigned int &maxElapsedTime) : Block(dialog, CapBlock_parameter_present, capReq, CAP_APPLY_CHARGING_GPRS, 0, invokeId, -1)
-    {
-        capBlock.parameter.applyChargingGPRSArg_v3.bit_mask = 0;
-
-        if (maxTransferredVolume > 0)
-        {
-            capBlock.parameter.applyChargingGPRSArg_v3.chargingCharacteristics.choice = CapChargingCharacteristics_maxTransferredVolume_chosen;
-            capBlock.parameter.applyChargingGPRSArg_v3.chargingCharacteristics.u.maxTransferredVolume = maxTransferredVolume;
-        }
-        else if (maxElapsedTime > 0)
-        {
-            capBlock.parameter.applyChargingGPRSArg_v3.chargingCharacteristics.choice = CapChargingCharacteristics_maxElapsedTime_chosen;
-            capBlock.parameter.applyChargingGPRSArg_v3.chargingCharacteristics.u.maxElapsedTime = maxElapsedTime;
-        }
-    }
-};
-
-/**
- * The ApplyChargingReportGPRSResBlock class.
- */
-class ApplyChargingReportGPRSResBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of ApplyChargingReportGPRSResBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     */
-    ApplyChargingReportGPRSResBlock(Dialog *dialog, const short &invokeId) : Block(dialog, 0, capRsp, CAP_APPLY_CHARGING_REPORT_GPRS, 0, invokeId, -1)
-    {
-    }
-};
-
-/**
- * The ApplyChargingReqBlock class.
- */
-class ApplyChargingReqBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of ApplyChargingReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     * @param &sendingSideId const unsigned char
-     * @param &maxCallPeriodDuration const unsigned int
-     * @param &releaseIfdurationExceeded const bool
-     */
-    ApplyChargingReqBlock(Dialog *dialog, const short &invokeId, const unsigned char &sendingSideId, const unsigned int &maxCallPeriodDuration, const bool &releaseIfdurationExceeded) : Block(dialog, CapBlock_parameter_present | CapBlock_subParameter_present, capReq, CAP_APPLY_CHARGING, 0, invokeId, -1)
-    {
-        capBlock.parameter.applyChargingArg_v2.bit_mask = CapApplyChargingArg_v2_partyToCharge_present;
-        capBlock.parameter.applyChargingArg_v2.partyToCharge.choice = CapSendingSideID_sendingSideID_chosen;
-        capBlock.parameter.applyChargingArg_v2.partyToCharge.u.sendingSideID.length = 1;
-        capBlock.parameter.applyChargingArg_v2.partyToCharge.u.sendingSideID.value[0] = sendingSideId;
-        capBlock.parameter.applyChargingArg_v2.aChBillingChargingCharacteristics.length = 0;
-
-        capBlock.subParameter.cAMEL_AChBillingChargingCharacteristics_v2.choice = CapCAMEL_AChBillingChargingCharacteristics_v2_timeDurationCharging_chosen;
-        capBlock.subParameter.cAMEL_AChBillingChargingCharacteristics_v2.u.timeDurationCharging.bit_mask = 0;
-        capBlock.subParameter.cAMEL_AChBillingChargingCharacteristics_v2.u.timeDurationCharging.maxCallPeriodDuration = maxCallPeriodDuration;
-        if (releaseIfdurationExceeded)
-        {
-            capBlock.subParameter.cAMEL_AChBillingChargingCharacteristics_v2.u.timeDurationCharging.bit_mask = CapCAMEL_AChBillingChargingCharacteristics_v2_timeDurationCharging_releaseIfdurationExceeded_present;
-            capBlock.subParameter.cAMEL_AChBillingChargingCharacteristics_v2.u.timeDurationCharging.releaseIfdurationExceeded.bit_mask = CapReleaseIfDurationExceeded_tone_present;
-            capBlock.subParameter.cAMEL_AChBillingChargingCharacteristics_v2.u.timeDurationCharging.releaseIfdurationExceeded.tone = true;
-        }
-    }
-};
-
-/**
- * The CloseReqBlock class.
- */
-class CloseReqBlock : public Block
+class CloseReqBlock : public GBlock
 {
 public:
 
@@ -1229,444 +1289,145 @@ public:
      * Creates a new instance of CloseReqBlock.
      * @param *dialog Dialog
      */
-    CloseReqBlock(Dialog *dialog) : Block(dialog, CapBlock_parameter_present, capReq, CAP_CLOSE, 0, 0, -1)
+    CloseReqBlock(Dialog *dialog) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_CLOSE, 0, -1)
     {
-        capBlock.parameter.closeArg.releaseMethod = capNormalRelease;
+        // No op
     }
-};
 
+    gblock_t* getGBlock()
+    {
+        gblock_t* gb = GBlock::getGBlock(gb);
+        gb->parameter.closeArg.releaseMethod = normalRelease;
+        gb->parameter.closeArg.qualityOfService = CL_SVC_CLASS_0;
+        return gb;
+    }
+
+};
 /**
- * The ConnectReqBlock class.
+ * <p>The PAbortReqBlock class.</p>
  */
-class ConnectReqBlock : public Block
+class PAbortReqBlock : public GBlock
 {
 public:
 
     /**
-     * Creates a new instance of ConnectReqBlock.
+     * Creates a new instance of PAbortReqBlock.
      * @param *dialog Dialog
-     * @param &invokeId const short
-     * @param *calledPartyNumber CalledPartyNumber
-     * @param *genericNumber GenericNumber
      */
-    ConnectReqBlock(Dialog *dialog, const short &invokeId, CalledPartyNumber *calledPartyNumber, GenericNumber *genericNumber) : Block(dialog, CapBlock_parameter_present, capReq, CAP_CONNECT, 0, invokeId, -1)
+    PAbortReqBlock(Dialog *dialog) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_P_ABORT, 0, -1)
     {
-        int len = 32;
-        char *ch = new char[len];
-        calledPartyNumber->getCalledPartyNumber(ch, len);
-        capBlock.parameter.connectArg_v2.bit_mask = 0;
-        capBlock.parameter.connectArg_v2.destinationRoutingAddress.count = 1;
-        capBlock.parameter.connectArg_v2.destinationRoutingAddress.value[0].length = len;
-        memcpy(capBlock.parameter.connectArg_v2.destinationRoutingAddress.value[0].value, ch, len);
+        // No op
+    }
 
-        if (genericNumber != NULL)
-        {
-            genericNumber->getGenericNumber(ch, len);
-            capBlock.parameter.connectArg_v2.bit_mask = CapConnectArg_v2_genericNumbers_present;
-            capBlock.parameter.connectArg_v2.genericNumbers.count = 1;
-            capBlock.parameter.connectArg_v2.genericNumbers.value[0].length = len;
-            memcpy(capBlock.parameter.connectArg_v2.genericNumbers.value[0].value, ch, len);
-        }
-        delete[] ch;
+    gblock_t* getGBlock()
+    {
+        gblock_t *gb = GBlock::getGBlock(gb);
+        gb->parameter.pAbortArg.providerReason = ressourceLimitation;
+        gb->parameter.pAbortArg.source = networkServiceProblem;
+        return gb;
     }
 };
-
 /**
- * The ContinueGPRSReqBlock class.
+ * <p>The UAbortReqBlock class.</p>
  */
-class ContinueGPRSReqBlock : public Block
+class UAbortReqBlock : public GBlock
 {
 public:
 
     /**
-     * Creates a new instance of ContinueGPRSReqBlock.
+     * Creates a new instance of UAbortReqBlock.
      * @param *dialog Dialog
-     * @param &invokeId const short
      */
-    ContinueGPRSReqBlock(Dialog *dialog, const short &invokeId) : Block(dialog, CapBlock_parameter_present, capReq, CAP_CONTINUE_GPRS, 0, invokeId, -1)
+    UAbortReqBlock(Dialog *dialog) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_U_ABORT, 0, -1)
     {
-        capBlock.parameter.continueGPRSArg_v3.bit_mask = 0;
+        // No op
     }
-};
 
+    gblock_t* getGBlock()
+    {
+        gblock_t* gb = GBlock::getGBlock();
+        gb->parameter.uAbortArg.userReason.choice = MAP_UserAbortChoice_applicationProcedureCancellation_chosen;
+        gb->parameter.uAbortArg.userReason.u.applicationProcedureCancellation = ProcedureCancellationReason_remoteOperationsFailure;
+        gb->parameter.uAbortArg.qualityOfService = CL_SVC_CLASS_0;
+        return gb;
+    }
+
+};
 /**
- * The ContinueReqBlock class.
+ * <p>The ErrorBlock class.</p>
  */
-class ContinueReqBlock : public Block
+class ErrorBlock : public GBlock
 {
 public:
 
     /**
-     * Creates a new instance of ContinueReqBlock.
+     * Creates a new instance of ErrorBlock.
      * @param *dialog Dialog
-     * @param &invokeId const short
      */
-    ContinueReqBlock(Dialog *dialog, const short &invokeId) : Block(dialog, 0, capReq, CAP_CONTINUE, 0, invokeId, -1)
+    ErrorBlock(Dialog *dialog, const int &serviceMsg) : GBlock(dialog, 0, GMAP_ERROR, serviceMsg, 0, -1)
     {
+        // No op
+    }
+
+    gblock_t* getGBlock()
+    {
+        return GBlock::getGBlock();
     }
 };
 
-/**
- * The DelimiterReqBlock class.
- */
-class DelimiterReqBlock : public Block
+class AnytimeInterrogationReqBlock : public GBlock
 {
-public:
-
-    /**
-     * Creates a new instance of DelimiterReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     */
-    DelimiterReqBlock(Dialog *dialog, const short &invokeId) : Block(dialog, CapBlock_parameter_present, capReq, CAP_DELIMITER, 0, invokeId, -1)
-    {
-        capBlock.parameter.delimiter.qualityOfService = CL_SVC_CLASS_0;
-    }
-};
-
-/**
- * The DisconnectForwardConnectionReqBlock class.
- */
-class DisconnectForwardConnectionReqBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of DisconnectForwardConnectionReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     */
-    DisconnectForwardConnectionReqBlock(Dialog *dialog, const short &invokeId) : Block(dialog, 0, capReq, CAP_DISCONNECT_FORWARD_CONNECTION, 0, invokeId, -1)
-    {
-    }
-};
-
-/**
- * The EstablishTemporaryConnectionReqBlock class.
- */
-class EstablishTemporaryConnectionReqBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of EstablishTemporaryConnectionReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     * @param *genericNumber GenericNumber
-     */
-    EstablishTemporaryConnectionReqBlock(Dialog *dialog, const short &invokeId, GenericNumber *genericNumber) : Block(dialog, CapBlock_parameter_present, capReq, CAP_ESTABLISH_TEMPORARY_CONNECTION, 0, invokeId, -1)
-    {
-        int len = 32;
-        char *ch = new char[len];
-        genericNumber->getGenericNumber(ch, len);
-        capBlock.parameter.establishTemporaryConnectionArg_v2.bit_mask = 0;
-        capBlock.parameter.establishTemporaryConnectionArg_v2.assistingSSPIPRoutingAddress.length = len;
-        memcpy(capBlock.parameter.establishTemporaryConnectionArg_v2.assistingSSPIPRoutingAddress.value, ch, len);
-        delete[] ch;
-    }
-};
-
-/**
- * The EventReportGPRSResBlock class.
- */
-class EventReportGPRSResBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of EventReportGPRSResBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     */
-    EventReportGPRSResBlock(Dialog *dialog, const short &invokeId) : Block(dialog, 0, capRsp, CAP_EVENT_REPORT_GPRS, 0, invokeId, -1)
-    {
-    }
-};
-
-/**
- * The EntityReleasedGPRSResBlock class.
- */
-class EntityReleasedGPRSResBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of EntityReleasedGPRSResBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     */
-    EntityReleasedGPRSResBlock(Dialog *dialog, const short &invokeId) : Block(dialog, 0, capRsp, CAP_ENTITY_RELEASED_GPRS, 0, invokeId, -1)
-    {
-    }
-};
-
-/**
- * The OpenResBlock class.
- */
-class OpenResBlock : public Block
-{
-public:
-
-    /* constants for gprsRerence */
-    static char GPRS_REFERENCE_NOT_PRESENT;
-    static char GPRS_ORIGINATION_REFERENCE_PRESENT;
-    static char GPRS_DESTINATION_REFERENCE_PRESENT;
-
-    /**
-     * Creates a new instance of OpenResBlock.
-     * @param *dialog Dialog
-     * @param &result const CapDialogResult
-     * @param &gprsReference const char
-     * @param &gprsOriginationReference const unsigned int
-     * @param &gprsDestinationReference const unsigned int
-     */
-    OpenResBlock(Dialog *dialog, const CapDialogResult &result, const char &gprsReference, const unsigned int &gprsOriginationReference, const unsigned int &gprsDestinationReference) : Block(dialog, CapBlock_parameter_present, capRsp, CAP_OPEN, 0, 0, -1)
-    {
-        capBlock.parameter.openRes.bit_mask = 0;
-        capBlock.parameter.openRes.result = result;
-        capBlock.parameter.openRes.dialogPortion.bit_mask = 0;
-        capBlock.parameter.openRes.dialogPortion.userInformationLength = 0;
-        if (result == capDialogAccepted)
-        {
-            if (gprsReference != GPRS_REFERENCE_NOT_PRESENT)
-            {
-                capBlock.parameter.openRes.bit_mask = CapOpenRes_dialogPortion_present;
-                if ((gprsReference & GPRS_ORIGINATION_REFERENCE_PRESENT) == GPRS_ORIGINATION_REFERENCE_PRESENT)
-                {
-                    capBlock.parameter.openRes.dialogPortion.bit_mask |= CapDialogPortion_gprsOriginatingReference_present;
-                    capBlock.parameter.openRes.dialogPortion.gprsOriginatingReference = gprsOriginationReference;
-                }
-                if ((gprsReference & GPRS_DESTINATION_REFERENCE_PRESENT) == GPRS_DESTINATION_REFERENCE_PRESENT)
-                {
-                    capBlock.parameter.openRes.dialogPortion.bit_mask |= CapDialogPortion_gprsDestinationReference_present;
-                    capBlock.parameter.openRes.dialogPortion.gprsDestinationReference = gprsDestinationReference;
-                }
-            }
-        }
-    }
-
-    /**
-     * Creates a new instance of OpenResBlock.
-     * @param *dialog Dialog
-     * @param &result const CapDialogResult
-     * @param &reason const CapOpenRefuseReason
-     */
-    OpenResBlock(Dialog *dialog, const CapDialogResult &result, const CapOpenRefuseReason &reason) : Block(dialog, CapBlock_parameter_present, capRsp, CAP_OPEN, 0, 0, -1)
-    {
-        capBlock.parameter.openRes.bit_mask = CapOpenRes_refuseReason_present;
-        capBlock.parameter.openRes.result = result;
-        capBlock.parameter.openRes.dialogPortion.bit_mask = 0;
-        capBlock.parameter.openRes.dialogPortion.userInformationLength = 0;
-        if (result == capDialogRefused) capBlock.parameter.openRes.refuseReason = reason;
-    }
-};
-
-char OpenResBlock::GPRS_REFERENCE_NOT_PRESENT = 0x0;
-char OpenResBlock::GPRS_ORIGINATION_REFERENCE_PRESENT = 0x1;
-char OpenResBlock::GPRS_DESTINATION_REFERENCE_PRESENT = 0x2;
-
-/**
- * The ReleaseCallReqBlock class.
- */
-class ReleaseCallReqBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of ReleaseCallReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     * @param *cause Cause
-     */
-    ReleaseCallReqBlock(Dialog *dialog, const short &invokeId, Cause *cause) : Block(dialog, CapBlock_parameter_present, capReq, CAP_RELEASE_CALL, 0, invokeId, -1)
-    {
-        int len = 2;
-        char *ch = new char[len];
-        cause->getCause(ch, len);
-        capBlock.parameter.releaseCallArg_v2.length = len;
-        memcpy(capBlock.parameter.releaseCallArg_v2.value, ch, len);
-        delete[] ch;
-    }
-};
-
-/**
- * The ReleaseGPRSReqBlock class.
- */
-class ReleaseGPRSReqBlock : public Block
-{
-public:
-
-    /**
-     * Creates a new instance of ReleaseGPRSReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     * @param &gprsCause const unsigned char
-     */
-    ReleaseGPRSReqBlock(Dialog *dialog, const short &invokeId, const unsigned char &gprsCause) : Block(dialog, CapBlock_parameter_present, capReq, CAP_RELEASE_GPRS, 0, invokeId, -1)
-    {
-        capBlock.parameter.releaseGPRSArg_v3.bit_mask = 0;
-        capBlock.parameter.releaseGPRSArg_v3.gprsCause.length = 1;
-        capBlock.parameter.releaseGPRSArg_v3.gprsCause.value[0] = gprsCause;
-    }
-};
-
-/**
- * The RequestReportBCSMEventReqBlock class.
- */
-class RequestReportBCSMEventReqBlock : public Block
-{
-public:
-
-    /* constants for bcsmEvents */
-    static int ROUTE_SELECT_FAILURE_2;
-    static int O_CALLED_PARTY_BUSY_2;
-    static int O_NO_ANSWER_2;
-    static int O_ANSWER_2;
-    static int O_DISCONNECT_1;
-    static int O_DISCONNECT_2;
-    static int O_ABANDON_1;
-    static int O_ALL;
-    static int T_BUSY_2;
-    static int T_NO_ANSWER_2;
-    static int T_ANSWER_2;
-    static int T_DISCONNECT_1;
-    static int T_DISCONNECT_2;
-    static int T_ABANDON_1;
-    static int T_ALL;
-
-    /**
-     * Creates a new instance of RequestReportBCSMEventReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     * @param &bcsmEvents const int
-     */
-    RequestReportBCSMEventReqBlock(Dialog *dialog, const short &invokeId, const int &bcsmEvents) : Block(dialog, CapBlock_parameter_present, capReq, CAP_REQUEST_REPORT_BCSM_EVENT, 0, invokeId, -1)
-    {
-        capBlock.parameter.requestReportBCSMEventArg_v2.bit_mask = 0;
-        unsigned short count = 0;
-        if (bcsmEvents <= O_ALL)
-        {
-            if ((bcsmEvents & ROUTE_SELECT_FAILURE_2) == ROUTE_SELECT_FAILURE_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_routeSelectFailure, capMonitorMode_t2_notifyAndContinue, 2, 0);
-            if ((bcsmEvents & O_CALLED_PARTY_BUSY_2) == O_CALLED_PARTY_BUSY_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_oCalledPartyBusy, capMonitorMode_t2_interrupted, 2, 0);
-            if ((bcsmEvents & O_NO_ANSWER_2) == O_NO_ANSWER_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_oNoAnswer, capMonitorMode_t2_interrupted, 2, 40);
-            if ((bcsmEvents & O_ANSWER_2) == O_ANSWER_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_oAnswer, capMonitorMode_t2_notifyAndContinue, 2, 0);
-            if ((bcsmEvents & O_DISCONNECT_1) == O_DISCONNECT_1)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_oDisconnect, capMonitorMode_t2_notifyAndContinue, 1, 0);
-            if ((bcsmEvents & O_DISCONNECT_2) == O_DISCONNECT_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_oDisconnect, capMonitorMode_t2_interrupted, 2, 0);
-            if ((bcsmEvents & O_ABANDON_1) == O_ABANDON_1)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_oAbandon, capMonitorMode_t2_notifyAndContinue, 1, 0);
-        }
-        else
-        {
-            if ((bcsmEvents & T_BUSY_2) == T_BUSY_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_tBusy, capMonitorMode_t2_interrupted, 2, 0);
-            if ((bcsmEvents & T_NO_ANSWER_2) == T_NO_ANSWER_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_tNoAnswer, capMonitorMode_t2_interrupted, 2, 0);
-            if ((bcsmEvents & T_ANSWER_2) == T_ANSWER_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_tAnswer, capMonitorMode_t2_notifyAndContinue, 2, 0);
-            if ((bcsmEvents & T_DISCONNECT_1) == T_DISCONNECT_1)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_tDisconnect, capMonitorMode_t2_notifyAndContinue, 1, 0);
-            if ((bcsmEvents & T_DISCONNECT_2) == T_DISCONNECT_2)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_tDisconnect, capMonitorMode_t2_interrupted, 2, 0);
-            if ((bcsmEvents & T_ABANDON_1) == T_ABANDON_1)
-                capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.value[count++] = getCapBCSMEvent(capEventTypeBCSM_t2_tAbandon, capMonitorMode_t2_notifyAndContinue, 1, 0);
-        }
-        capBlock.parameter.requestReportBCSMEventArg_v2.bcsmEvents.count = count;
-    }
-
 private:
+    string name;
+    unsigned char type;
+    unsigned char length;
+    unsigned char smRPPRI;
+    string serviceCentreAddress;
+    unsigned char serviceCentreAddressType;
 
-    /**
-     * Returns the capBCSMEvent.
-     * @param &eventTypeBCSM const CapEventTypeBCSM_t2
-     * @param &monitorMode const CapMonitorMode_t2
-     * @param &sendingSideId const unsigned char
-     * @param &applicationTimer const unsigned short
-     * @return CapBCSMEvent_t2
-     */
-    CapBCSMEvent_t2 getCapBCSMEvent(const CapEventTypeBCSM_t2 &eventTypeBCSM,
-                                    const CapMonitorMode_t2 &monitorMode,
-                                    const unsigned char &sendingSideId,
-                                    const unsigned short &applicationTimer)
-    {
-        CapBCSMEvent_t2 capBCSMEvent;
-        capBCSMEvent.bit_mask = CapBCSMEvent_t2_legID_present;
-        capBCSMEvent.eventTypeBCSM = eventTypeBCSM;
-        capBCSMEvent.monitorMode = monitorMode;
-        capBCSMEvent.legID.choice = CapLegID_sendingSideID_chosen;
-        capBCSMEvent.legID.u.sendingSideID.length = 1;
-        capBCSMEvent.legID.u.sendingSideID.value[0] = sendingSideId;
-        if (applicationTimer > 0)
-        {
-            capBCSMEvent.bit_mask |= CapBCSMEvent_t2_dPSpecificCriteria_present;
-            capBCSMEvent.dPSpecificCriteria.choice = CapDPSpecificCriteria_applicationTimer_chosen;
-            capBCSMEvent.dPSpecificCriteria.u.applicationTimer = applicationTimer;
-        }
-        return capBCSMEvent;
-    }
-};
-
-int RequestReportBCSMEventReqBlock::ROUTE_SELECT_FAILURE_2 = 0x1;
-int RequestReportBCSMEventReqBlock::O_CALLED_PARTY_BUSY_2 = 0x2;
-int RequestReportBCSMEventReqBlock::O_NO_ANSWER_2 = 0x4;
-int RequestReportBCSMEventReqBlock::O_ANSWER_2 = 0x8;
-int RequestReportBCSMEventReqBlock::O_DISCONNECT_1 = 0x10;
-int RequestReportBCSMEventReqBlock::O_DISCONNECT_2 = 0x20;
-int RequestReportBCSMEventReqBlock::O_ABANDON_1 = 0x40;
-int RequestReportBCSMEventReqBlock::O_ALL = 0x7f;
-int RequestReportBCSMEventReqBlock::T_BUSY_2 = 0x200;
-int RequestReportBCSMEventReqBlock::T_NO_ANSWER_2 = 0x400;
-int RequestReportBCSMEventReqBlock::T_ANSWER_2 = 0x800;
-int RequestReportBCSMEventReqBlock::T_DISCONNECT_1 = 0x1000;
-int RequestReportBCSMEventReqBlock::T_DISCONNECT_2 = 0x2000;
-int RequestReportBCSMEventReqBlock::T_ABANDON_1 = 0x4000;
-int RequestReportBCSMEventReqBlock::T_ALL = 0x7f00;
-
-/**
- * The RequestReportGPRSEventReqBlock class.
- */
-class RequestReportGPRSEventReqBlock : public Block
-{
 public:
-
-    /* constants for gPRSEvent */
-    static char PDP_CONTEXT_ESTABLISHMENT_ACK;
-    static char DISCONNECT;
-    static char ALL;
-
-    /**
-     * Creates a new instance of RequestReportBCSMReqBlock.
-     * @param *dialog Dialog
-     * @param &invokeId const short
-     * @param &gprsEvents const char
-     */
-    RequestReportGPRSEventReqBlock(Dialog *dialog, const short &invokeId, const char &gprsEvents) : Block(dialog, CapBlock_parameter_present, capReq, CAP_REQUEST_REPORT_GPRS_EVENT, 0, invokeId, -1)
+    AnytimeInterrogationReqBlock(Dialog* dialog,
+                                 const short& invokeId,
+                                 const string& name,
+                                 const unsigned char& type,
+                                 const unsigned char& length, // TODO msisdnlength
+                                 const unsigned char& smRPPRI,
+                                 const string& serviceCentreAddress,
+                                 const unsigned char& serviceCentreAddressType) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, ANY_TIME_INTERROGATION, 0, invokeId, -1)
     {
-        capBlock.parameter.requestReportGPRSEventArg_v3.bit_mask = 0;
-        unsigned short count = 0;
-        if ((gprsEvents & PDP_CONTEXT_ESTABLISHMENT_ACK) == PDP_CONTEXT_ESTABLISHMENT_ACK)
-        {
-            capBlock.parameter.requestReportGPRSEventArg_v3.gPRSEvent.value[count].gPRSEventType = capGPRSEventType_pdp_ContextEstablishmentAcknowledgement;
-            capBlock.parameter.requestReportGPRSEventArg_v3.gPRSEvent.value[count].monitorMode = capMonitorMode_interrupted;
-            count++;
-        }
-        if ((gprsEvents & DISCONNECT) == DISCONNECT)
-        {
-            capBlock.parameter.requestReportGPRSEventArg_v3.gPRSEvent.value[count].gPRSEventType = capGPRSEventType_disconnect;
-            capBlock.parameter.requestReportGPRSEventArg_v3.gPRSEvent.value[count].monitorMode = capMonitorMode_interrupted;
-            count++;
-        }
-        capBlock.parameter.requestReportGPRSEventArg_v3.gPRSEvent.count = count;
+        this->name = name;
+        this->type = type;
+        this->length = length;
+        this->smRPPRI = smRPPRI;
+        this->serviceCentreAddress = serviceCentreAddress;
+        this->serviceCentreAddressType = serviceCentreAddressType;
+    }
+    
+    gblock_t* getGBlock() {
+        gblock_t* gb = GBlock::getGBlock();
+        int tmpIMSILen = 32;
+        unsigned char tmpIMSI[tmpIMSILen];
+        Address msisdnAddr(name, length);
+        msisdnAddr.getAddress(tmpIMSI, tmpIMSILen);
+        // pgb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_imsi_chosen;
+        gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_imsi_chosen;
+        gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILen;
+        memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.value, tmpIMSI, tmpIMSILen);
+        
+        
+//        gb->parameter.routingInfoForSM_Arg_v1.sm_RP_PRI=smRPPRI;
+//        int tmpSCALen=32;
+//        unsigned char tmpSCA[tmpSCALen];
+//        getAddress(serviceCentreAddress, serviceCentreAddressType, tmpSCA, tmpSCALen);
+//        gb->parameter.routingInfoForSM_Arg_v1.serviceCentreAddress.length=tmpSCALen;
+//        memcpy(gb->parameter.routingInfoForSM_Arg_v1.serviceCentreAddress.value, tmpSCA, tmpSCALen);
+        
+        return GBlock::getGBlock();
     }
 };
-
-char RequestReportGPRSEventReqBlock::PDP_CONTEXT_ESTABLISHMENT_ACK = 0x1;
-char RequestReportGPRSEventReqBlock::DISCONNECT = 0x2;
-char RequestReportGPRSEventReqBlock::ALL = 0x3;
+//
+//class AnytimeInterrogationResBlock : public GBlock {
+//    // TODO 
+//};
 
 #endif	/* BLOCK_HPP */

@@ -57,7 +57,7 @@ boost::mutex appMutex;
  * @author Eduardo Marin
  * @version 2.0
  */
-class PutBlockService : public PutBlockQueue
+class PutBlockService : public PutGBlockQueue
 {
     /** The dialogMap. */
     DialogMap *dialogMap;
@@ -80,7 +80,7 @@ private:
             {
                 while (appState == ONLINE)
                 {
-                    Block *block = blockQueue.waitAndPop();
+                    GBlock *block = blockQueue.waitAndPop();
                     gblock_t gb = block->getCapBlock();
                     //capPrintBlock(capBlock);
                     Dialog *dialog;

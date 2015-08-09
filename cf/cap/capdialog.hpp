@@ -66,7 +66,7 @@ class CAPDialog : public Dialog {
     int localId;
 
     /** The putBlockQueue. */
-    PutBlockQueue *putBlockQueue;
+    PutGBlockQueue *putBlockQueue;
 
     /** The appClient. */
     AppClient *appClient;
@@ -96,7 +96,7 @@ public:
      * @param *appClient AppClient
      * @param *dialogTaskService Executor
      */
-    CAPDialog(const int &appId, const int &localId, PutBlockQueue *putBlockQueue, AppClient *appClient, Executor *dialogTaskService) {
+    CAPDialog(const int &appId, const int &localId, PutGBlockQueue *putBlockQueue, AppClient *appClient, Executor *dialogTaskService) {
         this->appId=appId;
         this->localId=localId;
         this->putBlockQueue=putBlockQueue;
