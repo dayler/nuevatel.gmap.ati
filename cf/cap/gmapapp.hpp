@@ -4,7 +4,7 @@
 #ifndef CAPAPP_HPP
 #define	CAPAPP_HPP
 
-#include "capdialog.hpp"
+#include "gmapapp.hpp"
 #include "cftask.hpp"
 #include "../../base/logger.hpp"
 
@@ -278,7 +278,8 @@ public:
                              0, // RT time quantum
                              0, // process class identifier
                              10) == RETURNerror)
-                { // max. wait for CPT entry
+                {
+                    // max. wait for CPT entry
                     stringstream ss;
                     ss << "FTAttach() failed, errno=" << errno + "(" << LastErrorReport << ")";
                     throw Exception(ss.str(), __FILE__, __LINE__);
@@ -403,7 +404,8 @@ private:
                                    TRUE, // truncate if large
                                    TRUE, // blocking read
                                    TRUE) == RETURNerror)
-                    { // interruptible
+                    {
+                        // interruptible
                         if (errno != EINTR)
                         { // not interrupt
                             std::stringstream ss;
@@ -524,11 +526,16 @@ private:
         {
             if (gb->serviceMsg == GMAP_OPEN)
             {
-                // TODO
+                // TODO ForwardMOSM
             }
             else
             {
-                // TODO
+                // Any other dialog
+                Dialog* dialog = dialogMap->get(gb->dialogId);
+                if (dialog != NULL)
+                {
+                    dialog->handle(gb);
+                }
             }
         }
     }
@@ -680,14 +687,14 @@ private:
     }
 };
 
-std::string GMAPApp::LOCAL_ID="localId";
-std::string GMAPApp::REMOTE_ID="remoteId";
-std::string GMAPApp::LOGICAL_NAME="logicalName";
-std::string GMAPApp::SSN="SSN";
-std::string GMAPApp::N_DIALOGS="nDialogs";
-std::string GMAPApp::N_INVOKES="nInvokes";
-std::string GMAPApp::N_COM_BUFS="nComBufs";
-std::string GMAPApp::NODE_NAME="nodeName";
-std::string GMAPApp::STAND_ALONE="standAlone";
+std::string GMAPApp::LOCAL_ID = "localId";
+std::string GMAPApp::REMOTE_ID = "remoteId";
+std::string GMAPApp::LOGICAL_NAME = "logicalName";
+std::string GMAPApp::SSN = "SSN";
+std::string GMAPApp::N_DIALOGS = "nDialogs";
+std::string GMAPApp::N_INVOKES = "nInvokes";
+std::string GMAPApp::N_COM_BUFS = "nComBufs";
+std::string GMAPApp::NODE_NAME = "nodeName";
+std::string GMAPApp::STAND_ALONE = "standAlone";
 
 #endif	/* CAPAPP_HPP */
