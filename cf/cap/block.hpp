@@ -82,7 +82,7 @@ public:
      * @param *addr char
      * @param &len const int
      */
-    Address(char *addr, const int &len)
+    Address(char *addr, const int& len)
     {
         if (len > 0)
         {
@@ -100,6 +100,7 @@ public:
 
     virtual ~Address()
     {
+        // No op
     }
 
     /**
@@ -589,11 +590,17 @@ public:
         ss << mcc << mnc;
         std::stringstream tmpLAC;
         tmpLAC << lac;
-        for (int i = tmpLAC.str().length(); i < 5; i++) ss << '0';
+        for (int i = tmpLAC.str().length(); i < 5; i++)
+        {
+            ss << '0';
+        }
         ss << tmpLAC.str();
         std::stringstream tmpCI;
         tmpCI << ci;
-        for (int i = tmpCI.str().length(); i < 5; i++) ss << '0';
+        for (int i = tmpCI.str().length(); i < 5; i++)
+        {
+            ss << '0';
+        }
         ss << tmpCI.str();
         return ss.str();
     }
@@ -719,20 +726,14 @@ static U8 getNatureOfAddress(const char &ch)
         return NA_UNKNOWN;
     }
 }
-
 /**
  * Returns the numberingPlan for a given type.
  * @param &ch const char
  * @return NumberingPlan
  */
-static SccpNumberingPlan getNumberingPlan(const char &ch)
+static NumberingPlan getNumberingPlan(const unsigned char &type)
 {
-    char npi = ch & Address::NPI;
-    if (npi == Address::NPI_ISDN)
-    {
-        return NP_ISDN;
-    }
-    return NP_UNKNOWN;
+    return e164; // National destination code
 }
 
 /**
@@ -842,9 +843,11 @@ public:
         blockQueue.push(block);
     }
 };
+
 /****************************************/
 /* Definition of GBlock implementations */
 /****************************************/
+
 /**
  * <p>The OpenReqBlock class.</p>
  */
@@ -877,6 +880,7 @@ public:
      * @param &remoteMSISDNType const unsigned char
      */
     OpenReqBlock(Dialog *dialog,
+                 const short& invokeId,
                  ObjectID *objectId,
                  const unsigned char &localSSN,
                  const unsigned int &localPC,
@@ -885,7 +889,7 @@ public:
                  const unsigned char &remoteSSN,
                  const unsigned int &remotePC,
                  const std::string &remoteMSISDN,
-                 const unsigned char &remoteMSISDNType) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_OPEN, 0, -1)
+                 const unsigned char &remoteMSISDNType) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_OPEN, 0, invokeId, -1)
     {
         this->objectId = objectId;
         this->localSSN = localSSN;
@@ -912,7 +916,7 @@ public:
         gb->parameter.openArg.originatingAddress.gt.natureOfAddress = getNatureOfAddress(localMSISDNType);
         gb->parameter.openArg.originatingAddress.gt.numberingPlan = getNumberingPlan(localMSISDNType);
         int tmpLocalLen = 32;
-        unsigned char tmpLocalMSISDN[tmpLocalLen];
+        unsigned char tmpLocalMSISDN[32];
         getOctet(localMSISDN, tmpLocalMSISDN, tmpLocalLen);
         gb->parameter.openArg.originatingAddress.gt.msisdnLength = tmpLocalLen;
         memcpy(gb->parameter.openArg.originatingAddress.gt.msisdn, tmpLocalMSISDN, tmpLocalLen);
@@ -928,7 +932,7 @@ public:
         gb->parameter.openArg.destinationAddress.gt.natureOfAddress = getNatureOfAddress(remoteMSISDNType);
         gb->parameter.openArg.destinationAddress.gt.numberingPlan = getNumberingPlan(remoteMSISDNType);
         int tmpRemoteLen = 32;
-        unsigned char tmpRemoteMSISDN[tmpRemoteLen];
+        unsigned char tmpRemoteMSISDN[32];
         getOctet(remoteMSISDN, tmpRemoteMSISDN, tmpRemoteLen);
         gb->parameter.openArg.destinationAddress.gt.msisdnLength = tmpRemoteLen;
         memcpy(gb->parameter.openArg.destinationAddress.gt.msisdn, tmpRemoteMSISDN, tmpRemoteLen);
@@ -953,7 +957,8 @@ public:
      * @param &result DialogResult
      */
     OpenResBlock(Dialog *dialog,
-                 const DialogResult &result) : GBlock(dialog, gblock_t_parameter_present, GMAP_RSP, GMAP_OPEN, 0, -1)
+                 const short& invokeId,
+                 const DialogResult &result) : GBlock(dialog, gblock_t_parameter_present, GMAP_RSP, GMAP_OPEN, 0, invokeId, -1)
     {
         this->result = result;
     }
@@ -977,7 +982,7 @@ public:
      * Creates a new instance of DelimiterReqBlock.
      * @param *dialog Dialog
      */
-    DelimiterReqBlock(Dialog *dialog) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_DELIMITER, 0, -1)
+    DelimiterReqBlock(Dialog *dialog, const short& invokeId) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_DELIMITER, 0, invokeId, -1)
     {
         // No op
     }
@@ -1000,14 +1005,14 @@ public:
      * Creates a new instance of CloseReqBlock.
      * @param *dialog Dialog
      */
-    CloseReqBlock(Dialog *dialog) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_CLOSE, 0, -1)
+    CloseReqBlock(Dialog *dialog, const short& invokeId) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_CLOSE, 0, invokeId, -1)
     {
         // No op
     }
 
     gblock_t* getGBlock()
     {
-        gblock_t* gb = GBlock::getGBlock(gb);
+        gblock_t* gb = GBlock::getGBlock();
         gb->parameter.closeArg.releaseMethod = normalRelease;
         gb->parameter.closeArg.qualityOfService = CL_SVC_CLASS_0;
         return gb;
@@ -1025,14 +1030,14 @@ public:
      * Creates a new instance of PAbortReqBlock.
      * @param *dialog Dialog
      */
-    PAbortReqBlock(Dialog *dialog) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_P_ABORT, 0, -1)
+    PAbortReqBlock(Dialog *dialog, const short& invokeId) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_P_ABORT, 0, invokeId, -1)
     {
         // No op
     }
 
     gblock_t* getGBlock()
     {
-        gblock_t *gb = GBlock::getGBlock(gb);
+        gblock_t *gb = GBlock::getGBlock();
         gb->parameter.pAbortArg.providerReason = ressourceLimitation;
         gb->parameter.pAbortArg.source = networkServiceProblem;
         return gb;
@@ -1049,7 +1054,7 @@ public:
      * Creates a new instance of UAbortReqBlock.
      * @param *dialog Dialog
      */
-    UAbortReqBlock(Dialog *dialog) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_U_ABORT, 0, -1)
+    UAbortReqBlock(Dialog *dialog, const short& invokeId) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, GMAP_U_ABORT, 0, invokeId, -1)
     {
         // No op
     }
@@ -1075,7 +1080,7 @@ public:
      * Creates a new instance of ErrorBlock.
      * @param *dialog Dialog
      */
-    ErrorBlock(Dialog *dialog, const int &serviceMsg) : GBlock(dialog, 0, GMAP_ERROR, serviceMsg, 0, -1)
+    ErrorBlock(Dialog *dialog,  const short& invokeId, const int &serviceMsg) : GBlock(dialog, 0, GMAP_ERROR, serviceMsg, 0, invokeId, -1)
     {
         // No op
     }
@@ -1120,8 +1125,8 @@ public:
     gblock_t* getGBlock() {
         gblock_t* gb = GBlock::getGBlock();
         int tmpIMSILength = 32;
-        unsigned char tmpIMSI[tmpIMSILength];
-        Address msisdnAddr(name, nameLength);
+        unsigned char tmpIMSI[32];
+        Address msisdnAddr(name.c_str(), nameLength);
         msisdnAddr.getAddress(tmpIMSI, tmpIMSILength);
         gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_imsi_chosen;
         gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILength;
@@ -1130,9 +1135,9 @@ public:
         // Set service sentre address
         int tmpSCALength = 32;
         unsigned char scAddr[32];
-        Address scaAddr(serviceCentreAddress, scaAddr);
+        Address scaAddr(serviceCentreAddress.c_str(), scaLength);
         scaAddr.getAddress(scAddr, tmpSCALength);
-        gb->parameter.anyTimeInterrogationArg_v3.gsmSCF_Address.length tmpSCALength;
+        gb->parameter.anyTimeInterrogationArg_v3.gsmSCF_Address.length = tmpSCALength;
         memcpy(gb->parameter.anyTimeInterrogationArg_v3.gsmSCF_Address.value, scAddr, tmpSCALength);
         
         return GBlock::getGBlock();

@@ -82,7 +82,7 @@ private:
                 while (appState == ONLINE)
                 {
                     GBlock *gblock = blockQueue.waitAndPop();
-                    gblock_t gb = gblock->getGBlock();
+                    gblock_t* gb = gblock->getGBlock();
                     //capPrintBlock(capBlock);
                     Dialog *dialog;
                     dialog = gblock->getDialog();
@@ -99,10 +99,10 @@ private:
                             {
                                 if (gb->serviceMsg == GMAP_OPEN)
                                 {
-                                    dialog->setDialogId(gb.dialogId);
+                                    dialog->setDialogId(gb->dialogId);
                                     dialogMap->put(dialog);
                                 }
-                                else if (gb.serviceMsg == GMAP_CLOSE)
+                                else if (gb->serviceMsg == GMAP_CLOSE)
                                 {
                                     if (dialog->getState() == Dialog::KILL_0)
                                     {
@@ -196,15 +196,14 @@ private:
     bool standAlone;
 
     /** The dialogMap. */
-    DialogMap *dialogMap;
+    DialogMap* dialogMap;
 
     /** The putBlockService. */
-    PutBlockService *putBlockService;
+    PutBlockService* putBlockService;
 
     /** The taskSet*/
-    TaskSet *taskSet;
-    SetSessionTask *setSessionTask;
-    TestSessionTask *testSessionTask;
+    TaskSet* taskSet;
+    TestSessionTask* testSessionTask;
 
     /** The appClient. */
     AppClient *appClient;
@@ -235,9 +234,7 @@ public:
         putBlockService = new PutBlockService(dialogMap);
         // taskSet
         taskSet = new TaskSet();
-        setSessionTask = new SetSessionTask(dialogMap, putBlockService);
         testSessionTask = new TestSessionTask(dialogMap, putBlockService);
-        taskSet->add(CFMessage::SET_SESSION_CALL, setSessionTask);
         taskSet->add(CFMessage::TEST_SESSION_CALL, testSessionTask);
         // appClient
         appClient = new AppClient(localId, remoteId, taskSet, properties);
@@ -250,7 +247,6 @@ public:
         interrupt();
         delete dialogTaskService;
         delete appClient;
-        delete setSessionTask;
         delete testSessionTask;
         delete taskSet;
         delete putBlockService;
