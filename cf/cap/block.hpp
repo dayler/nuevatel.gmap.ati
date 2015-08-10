@@ -78,7 +78,7 @@ public:
     }
 
     /**
-     * Creates a new instance of Address.
+     * Creates a new instance of Address. From semi octet.
      * @param *addr char
      * @param &len const int
      */
@@ -186,8 +186,14 @@ public:
         {
             int l = so[i] & 0xf;
             int h = (so[i] >> 4) & 0xf;
-            if (l < 0xf) str += hexCh[l];
-            if (h < 0xf) str += hexCh[h];
+            if (l < 0xf)
+            {
+                str += hexCh[l];
+            }
+            if (h < 0xf)
+            {
+                str += hexCh[h];
+            }
         }
         return str;
     }
@@ -1096,11 +1102,11 @@ class AnytimeInterrogationReqBlock : public GBlock
 private:
     string name;
     unsigned char type;
-    unsigned int nameLength;
+    int nameLength;
     unsigned char smRPPRI;
     string serviceCentreAddress;
     unsigned char serviceCentreAddressType;
-    unsigned int scaLength;
+    int scaLength;
 
 public:
     AnytimeInterrogationReqBlock(Dialog* dialog,
@@ -1115,11 +1121,11 @@ public:
     {
         this->name = name;
         this->type = type;
-        this->nameLength = nameLength;
+        this->nameLength = (int) nameLength;
         this->smRPPRI = smRPPRI;
         this->serviceCentreAddress = serviceCentreAddress;
         this->serviceCentreAddressType = serviceCentreAddressType;
-        this->scaLength = scaLength;
+        this->scaLength = (int) scaLength;
     }
     
     gblock_t* getGBlock() {
