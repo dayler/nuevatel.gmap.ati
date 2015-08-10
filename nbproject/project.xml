@@ -12,6 +12,7 @@
             <sourceRootList>
                 <sourceRootElem>base</sourceRootElem>
                 <sourceRootElem>cf</sourceRootElem>
+                <sourceRootElem>gmap</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

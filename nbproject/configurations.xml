@@ -38,6 +38,11 @@
           <itemPath>cf/cap/gmapapp.hpp</itemPath>
         </logicalFolder>
       </logicalFolder>
+      <logicalFolder name="gmap" displayName="gmap" projectFiles="true">
+        <itemPath>gmap/gblocksm.hpp</itemPath>
+        <itemPath>gmap/gmapconn.hpp</itemPath>
+        <itemPath>gmap/gmapsm.hpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -63,6 +68,7 @@
   <sourceRootList>
     <Elem>base</Elem>
     <Elem>cf</Elem>
+    <Elem>gmap</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -139,6 +145,12 @@
       </item>
       <item path="cf/cap/gmapapp.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="gmap/gblocksm.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gmap/gmapconn.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gmap/gmapsm.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -209,6 +221,12 @@
       <item path="cf/cap/dialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cf/cap/gmapapp.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gmap/gblocksm.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gmap/gmapconn.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gmap/gmapsm.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

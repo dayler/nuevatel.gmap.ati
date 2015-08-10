@@ -15,13 +15,13 @@ CND_PACKAGE_DIR_Debug=dist/Debug/OracleSolarisStudio-Solaris-x86/package
 CND_PACKAGE_NAME_Debug=trunk.tar
 CND_PACKAGE_PATH_Debug=dist/Debug/OracleSolarisStudio-Solaris-x86/package/trunk.tar
 # Release configuration
-CND_PLATFORM_Release=OracleSolarisStudio-Solaris-x86
-CND_ARTIFACT_DIR_Release=dist/Release/OracleSolarisStudio-Solaris-x86
+CND_PLATFORM_Release=GNU-MacOSX
+CND_ARTIFACT_DIR_Release=dist/Release/GNU-MacOSX
 CND_ARTIFACT_NAME_Release=trunk
-CND_ARTIFACT_PATH_Release=dist/Release/OracleSolarisStudio-Solaris-x86/trunk
-CND_PACKAGE_DIR_Release=dist/Release/OracleSolarisStudio-Solaris-x86/package
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-MacOSX/trunk
+CND_PACKAGE_DIR_Release=dist/Release/GNU-MacOSX/package
 CND_PACKAGE_NAME_Release=trunk.tar
-CND_PACKAGE_PATH_Release=dist/Release/OracleSolarisStudio-Solaris-x86/package/trunk.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-MacOSX/package/trunk.tar
 #
 # include compiler specific variables
 #

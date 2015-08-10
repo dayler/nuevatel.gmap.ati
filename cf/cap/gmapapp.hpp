@@ -6,6 +6,7 @@
 
 #include "capdialog.hpp"
 #include "cftask.hpp"
+#include "../../base/logger.hpp"
 
 /********************************
 *	UNIX system files	*
@@ -80,28 +81,28 @@ private:
             {
                 while (appState == ONLINE)
                 {
-                    GBlock *block = blockQueue.waitAndPop();
-                    gblock_t gb = block->getCapBlock();
+                    GBlock *gblock = blockQueue.waitAndPop();
+                    gblock_t gb = gblock->getGBlock();
                     //capPrintBlock(capBlock);
                     Dialog *dialog;
-                    dialog = block->getDialog();
+                    dialog = gblock->getDialog();
                     if (dialog->getState() != Dialog::CLOSE_0 && dialog->getState() != Dialog::ABORT_0)
                     {
                         int mapPutBlockRet = -1;
                         {
                             boost::lock_guard<boost::mutex> lock(appMutex);
-                            mapPutBlockRet = capPutBlock(block->getCapBlock());
+                            mapPutBlockRet = gMAPPutGBlock(gblock->getGBlock());
                         }
                         if (mapPutBlockRet == 0)
                         {
-                            if (capBlock->serviceType == capReq)
+                            if (gb->serviceType == GMAP_REQ)
                             {
-                                if (capBlock->serviceMsg == CAP_OPEN)
+                                if (gb->serviceMsg == GMAP_OPEN)
                                 {
-                                    dialog->setDialogId(capBlock->dialogId);
+                                    dialog->setDialogId(gb.dialogId);
                                     dialogMap->put(dialog);
                                 }
-                                else if (capBlock->serviceMsg == CAP_CLOSE)
+                                else if (gb.serviceMsg == GMAP_CLOSE)
                                 {
                                     if (dialog->getState() == Dialog::KILL_0)
                                     {
@@ -111,20 +112,24 @@ private:
                                         ss << std::hex << dialog->getDialogId();
                                         Logger::getLogger()->logp(&Level::WARNING, "PutBlockService", "run", ss.str());
                                     }
-                                    else dialog->setState(Dialog::CLOSE_0);
+                                    else
+                                    {
+                                        dialog->setState(Dialog::CLOSE_0);
+                                    }
                                 }
                             }
                         }
                         else
                         {
                             std::stringstream ss;
-                            ss << "capPutBlock failed " << capBlock->serviceMsg << " ";
+                            ss << "capPutBlock failed " << gb->serviceMsg << " ";
                             ss << std::hex << dialog->getDialogId();
                             Logger::getLogger()->logp(&Level::SEVERE, "PutBlockService", "run", ss.str());
                             dialog->setState(Dialog::ABORT_0);
                         }
                     }
-                    delete block;
+                    // Delete pointer gblock
+                    delete gblock;
                 }
             }
             else

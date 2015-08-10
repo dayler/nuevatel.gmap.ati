@@ -14,15 +14,15 @@ GREP=grep
 NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=cc
-CCC=CC
-CXX=CC
-FC=f95
+CC=gcc
+CCC=g++
+CXX=g++
+FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=OracleSolarisStudio-Solaris-x86
-CND_DLIB_EXT=so
+CND_PLATFORM=GNU-MacOSX
+CND_DLIB_EXT=dylib
 CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -64,7 +64,8 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trunk: ${OBJECTFILES}
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -fast -g0 -o ${OBJECTDIR}/main.o main.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -73,7 +74,6 @@ ${OBJECTDIR}/main.o: main.cpp
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
 	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trunk
-	${CCADMIN} -clean
 
 # Subprojects
 .clean-subprojects:

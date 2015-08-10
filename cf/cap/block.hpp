@@ -1,8 +1,8 @@
 /*
  * block.hpp
  */
-#ifndef BLOCK_HPP
-#define	BLOCK_HPP
+#ifndef BLOCK_HPP_01
+#define	BLOCK_HPP_01
 
 #include "dialog.hpp"
 #include "../../base/appconn/primitiveie.hpp"
@@ -408,295 +408,6 @@ char Number::NPI = 0x70;
 char Number::NPI_ISDN = 0x10;
 char Number::NPI_DNP = 0x30;
 char Number::NPI_TNP = 0x40;
-
-///**
-// * <p>The CallingPartyNumber class. See Q.763</p>
-// * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
-// *
-// * @author Eduardo Marin
-// * @version 2.0
-// */
-//class CallingPartyNumber : public Number
-//{
-//public:
-//
-//    /* constants */
-//    static char NI;
-//    /* ni 1 bit 7 */
-//    static char NI_COMPLETE;
-//    static char NI_INCOMPLETE;
-//
-//    static char APRI;
-//    /* apri 2 bit 2 and 3 */
-//    static char APRI_PRESENTATION_ALLOWED;
-//    static char APRI_PRESENTATION_RESTRICTED;
-//    static char APRI_ADDRESS_NA;
-//
-//    static char SI;
-//    /* apri 2 bit 0 and 1 */
-//    static char SI_USER_PROVIDED_NV;
-//    static char SI_USER_PROVIDED_VP;
-//    static char SI_USER_PROVIDED_VF;
-//    static char SI_NETWORK_PROVIDED;
-//
-//private:
-//
-//    /* private variables */
-//    char ni;
-//    char apri;
-//    char si;
-//
-//public:
-//
-//    /**
-//     * Creates a new instance of CallingPartyNumber.
-//     * @param &nai const char
-//     * @param &npi const char
-//     * @param &addr const std::string
-//     * @param &ni const char
-//     * @param &apri const char
-//     * @param &si const char
-//     */
-//    CallingPartyNumber(const char &nai, const char &npi, const std::string &addr, const char &ni, const char &apri, const char &si) : Number(nai, npi, addr)
-//    {
-//        this->ni = ni;
-//        this->apri = apri;
-//        this->si = si;
-//    }
-//
-//    /**
-//     * Creates a new instance of CallingPartyNumber.
-//     * @param *nbr char
-//     * @param &len const int
-//     */
-//    CallingPartyNumber(char *nbr, const int &len) : Number(nbr, len)
-//    {
-//        if (len > 1)
-//        {
-//            ni = nbr[1] & NI;
-//            apri = nbr[1] & APRI;
-//            si = nbr[1] & SI;
-//        }
-//        else
-//        {
-//            ni = 0;
-//            apri = 0;
-//            si = 0;
-//        }
-//    }
-//
-//    virtual ~CallingPartyNumber()
-//    {
-//    }
-//
-//    /**
-//     * Returns the callingPartyNumber.
-//     * @param *ch char
-//     * @param &len int
-//     */
-//    void getCallingPartyNumber(char *ch, int &len)
-//    {
-//        Number::getNumber(ch, len);
-//        ch[1] |= ni & NI;
-//        ch[1] |= apri & APRI;
-//        ch[1] |= si & SI;
-//    }
-//
-//    /**
-//     * Returns the ni.
-//     * @return char
-//     */
-//    char getNI()
-//    {
-//        return ni;
-//    }
-//
-//    /**
-//     * Returns the apri.
-//     * @return char
-//     */
-//    char getAPRI()
-//    {
-//        return apri;
-//    }
-//
-//    /**
-//     * Returns the si.
-//     * @return char
-//     */
-//    char getSI()
-//    {
-//        return si;
-//    }
-//};
-//
-//char CallingPartyNumber::NI = 0x80;
-//
-//char CallingPartyNumber::NI_COMPLETE = 0x0;
-//char CallingPartyNumber::NI_INCOMPLETE = 0x80;
-//
-//char CallingPartyNumber::APRI = 0xc;
-//
-//char CallingPartyNumber::APRI_PRESENTATION_ALLOWED = 0x0;
-//char CallingPartyNumber::APRI_PRESENTATION_RESTRICTED = 0x4;
-//char CallingPartyNumber::APRI_ADDRESS_NA = 0x8;
-//
-//char CallingPartyNumber::SI = 0x3;
-//
-//char CallingPartyNumber::SI_USER_PROVIDED_NV = 0x0;
-//char CallingPartyNumber::SI_USER_PROVIDED_VP = 0x1;
-//char CallingPartyNumber::SI_USER_PROVIDED_VF = 0x2;
-//char CallingPartyNumber::SI_NETWORK_PROVIDED = 0x3;
-//
-///**
-// * <p>The CalledPartyNumber class. See Q.763</p>
-// * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
-// *
-// * @author Eduardo Marin
-// * @version 2.0
-// */
-//class CalledPartyNumber : public Number
-//{
-//public:
-//
-//    /* constants */
-//    static char INN;
-//    /* inn 1 bit 7 */
-//    static char INN_RINNA;
-//    static char INN_RINNNA;
-//
-//private:
-//
-//    /* private variables */
-//    char inn;
-//
-//public:
-//
-//    /**
-//     * Creates a new instance of CalledPartyNumber.
-//     * @param &nai const char
-//     * @param &npi const char
-//     * @param &addr const std::string
-//     * @param &inn const char
-//     */
-//    CalledPartyNumber(const char &nai, const char &npi, const std::string &addr, const char &inn) : Number(nai, npi, addr)
-//    {
-//        this->inn = inn;
-//    }
-//
-//    /**
-//     * Creates a new instance of CalledPartyNumber.
-//     * @param *nbr char
-//     * @param &len const int
-//     */
-//    CalledPartyNumber(char *nbr, const int &len) : Number(nbr, len)
-//    {
-//        if (len > 1) inn = nbr[1] & INN;
-//        else inn = 0;
-//    }
-//
-//    /**
-//     * Returns the calledPartyNumber.
-//     * @param *ch char
-//     * @param &len int
-//     */
-//    void getCalledPartyNumber(char *ch, int &len)
-//    {
-//        Number::getNumber(ch, len);
-//        ch[1] |= inn & INN;
-//    }
-//
-//    /**
-//     * Returns the inn.
-//     * @return char
-//     */
-//    char getINN()
-//    {
-//        return inn;
-//    }
-//};
-
-//char CalledPartyNumber::INN = 0x80;
-//
-//char CalledPartyNumber::INN_RINNA = 0x0;
-//char CalledPartyNumber::INN_RINNNA = 0x80;
-
-/**
- * <p>The GenericNumber class. See Q.763</p>
- * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
- *
- * @author Eduardo Marin
- * @version 2.0
- */
-//class GenericNumber : public CallingPartyNumber
-//{
-//public:
-//
-//    /* constants */
-//    static char NQI_RESERVED_DIALED_DIGITS;
-//    static char NQI_ADDITIONAL_CALLED_NUMBER;
-//    static char NQI_ADDITIONAL_CONNECTED_NUMBER;
-//    static char NQI_ADDITIONAL_CALLING_PARTY_NUMBER;
-//
-//private:
-//
-//    /* private variables */
-//    char nqi;
-//
-//public:
-//
-//    /**
-//     * Creates a new instance of GenericNumber.
-//     * @param &nai const char
-//     * @param &npi const char
-//     * @param &addr const std::string
-//     * @param &ni const char
-//     * @param &apri const char
-//     * @param &si const char
-//     * @param &nqi const char
-//     */
-//    GenericNumber(const char &nai, const char &npi, const std::string &addr, const char &ni, const char &apri, const char &si, const char &nqi) : CallingPartyNumber(nai, npi, addr, ni, apri, si)
-//    {
-//        this->nqi = nqi;
-//    }
-//
-//    /**
-//     * Creates a new instance of GenericNumber.
-//     * @param *nbr char
-//     * @param &len const int
-//     */
-//    GenericNumber(char *nbr, const int &len) : CallingPartyNumber(nbr + 1, len - 1)
-//    {
-//        if (len > 0) nqi = nbr[0];
-//        else nqi = 0;
-//    }
-//
-//    /**
-//     * Returns the genericNumber.
-//     * @param *ch char
-//     * @param &len int
-//     */
-//    void getGenericNumber(char *ch, int &len)
-//    {
-//        ch[0] = nqi;
-//        CallingPartyNumber::getCallingPartyNumber(ch + 1, len);
-//        len++;
-//    }
-//
-//    /**
-//     * Returns the nqi.
-//     * @return char
-//     */
-//    char getNQI()
-//    {
-//        return nqi;
-//    }
-//};
-//
-//char GenericNumber::NQI_RESERVED_DIALED_DIGITS = 0x0;
-//char GenericNumber::NQI_ADDITIONAL_CALLED_NUMBER = 0x1;
-//char GenericNumber::NQI_ADDITIONAL_CONNECTED_NUMBER = 0x5;
-//char GenericNumber::NQI_ADDITIONAL_CALLING_PARTY_NUMBER = 0x6;
 
 /**
  * <p>The GenericNumber class. See Q.850</p>
@@ -1380,47 +1091,49 @@ class AnytimeInterrogationReqBlock : public GBlock
 private:
     string name;
     unsigned char type;
-    unsigned char length;
+    unsigned int nameLength;
     unsigned char smRPPRI;
     string serviceCentreAddress;
     unsigned char serviceCentreAddressType;
+    unsigned int scaLength;
 
 public:
     AnytimeInterrogationReqBlock(Dialog* dialog,
                                  const short& invokeId,
                                  const string& name,
                                  const unsigned char& type,
-                                 const unsigned char& length, // TODO msisdnlength
+                                 const unsigned int& nameLength, // TODO msisdnlength
                                  const unsigned char& smRPPRI,
                                  const string& serviceCentreAddress,
+                                 const unsigned int& scaLength,
                                  const unsigned char& serviceCentreAddressType) : GBlock(dialog, gblock_t_parameter_present, GMAP_REQ, ANY_TIME_INTERROGATION, 0, invokeId, -1)
     {
         this->name = name;
         this->type = type;
-        this->length = length;
+        this->nameLength = nameLength;
         this->smRPPRI = smRPPRI;
         this->serviceCentreAddress = serviceCentreAddress;
         this->serviceCentreAddressType = serviceCentreAddressType;
+        this->scaLength = scaLength;
     }
     
     gblock_t* getGBlock() {
         gblock_t* gb = GBlock::getGBlock();
-        int tmpIMSILen = 32;
-        unsigned char tmpIMSI[tmpIMSILen];
-        Address msisdnAddr(name, length);
-        msisdnAddr.getAddress(tmpIMSI, tmpIMSILen);
-        // pgb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_imsi_chosen;
+        int tmpIMSILength = 32;
+        unsigned char tmpIMSI[tmpIMSILength];
+        Address msisdnAddr(name, nameLength);
+        msisdnAddr.getAddress(tmpIMSI, tmpIMSILength);
         gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_imsi_chosen;
-        gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILen;
-        memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.value, tmpIMSI, tmpIMSILen);
-        
-        
-//        gb->parameter.routingInfoForSM_Arg_v1.sm_RP_PRI=smRPPRI;
-//        int tmpSCALen=32;
-//        unsigned char tmpSCA[tmpSCALen];
-//        getAddress(serviceCentreAddress, serviceCentreAddressType, tmpSCA, tmpSCALen);
-//        gb->parameter.routingInfoForSM_Arg_v1.serviceCentreAddress.length=tmpSCALen;
-//        memcpy(gb->parameter.routingInfoForSM_Arg_v1.serviceCentreAddress.value, tmpSCA, tmpSCALen);
+        gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILength;
+        memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.value, tmpIMSI, tmpIMSILength);
+        gb->parameter.anyTimeInterrogationArg_v3.requestedInfo.bit_mask = RequestedInfo_locationInformation_present;
+        // Set service sentre address
+        int tmpSCALength = 32;
+        unsigned char scAddr[32];
+        Address scaAddr(serviceCentreAddress, scaAddr);
+        scaAddr.getAddress(scAddr, tmpSCALength);
+        gb->parameter.anyTimeInterrogationArg_v3.gsmSCF_Address.length tmpSCALength;
+        memcpy(gb->parameter.anyTimeInterrogationArg_v3.gsmSCF_Address.value, scAddr, tmpSCALength);
         
         return GBlock::getGBlock();
     }
@@ -1430,4 +1143,4 @@ public:
 //    // TODO 
 //};
 
-#endif	/* BLOCK_HPP */
+#endif	/* BLOCK_HPP_01 */
