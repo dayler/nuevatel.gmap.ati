@@ -31,6 +31,15 @@ public:
     static int WATCH_TYPE_IE;   // byte
     static int WATCH_FLAGS_IE;  // byte
     static int WATCH_ARG_IE;    // watchArg
+    static int SUBSCRIBER_NAME_IE; // string
+    static int CF_CLUSTER_ID_IE; // int
+    static int APP_ID_IE; // int
+    static int STAT_ID_IE; // short
+    static int N_IE; // int
+    static int TIME_SUM_IE; // long
+    static int TIME_2_SUM_IE; // long
+    static int N_EXCEPTION_IE; // int
+    static int SUBSCRIBER_CELL_ID; // string
 
     virtual ~CFIE() {}
 
@@ -54,6 +63,16 @@ int CFIE::EVENT_ARG_IE  =0x19;
 int CFIE::WATCH_TYPE_IE =0x20;
 int CFIE::WATCH_FLAGS_IE=0x21;
 int CFIE::WATCH_ARG_IE  =0x22;
+
+int CFIE::SUBSCRIBER_NAME_IE =0x30;  // string
+int CFIE::CF_CLUSTER_ID_IE   =0x31;  // int
+int CFIE::APP_ID_IE          =0x40;  // int
+int CFIE::STAT_ID_IE         =0x41;  // short
+int CFIE::N_IE               =0x42;  // int
+int CFIE::TIME_SUM_IE        =0x43;  // long
+int CFIE::TIME_2_SUM_IE      =0x44;  // long
+int CFIE::N_EXCEPTION_IE     =0x45;  // int
+int CFIE::SUBSCRIBER_CELL_ID =0x46;  // string
 
 /**
  * <p>The Id class.</p>

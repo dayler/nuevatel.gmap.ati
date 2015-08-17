@@ -7,6 +7,7 @@
 #include "cfie.hpp"
 #include "../../../base/appconn/appmessages.hpp"
 
+using namespace std;
 /**
  * <p>The CFMessage abstract class.</p>
  * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
@@ -14,8 +15,8 @@
  * @author Eduardo Marin
  * @version 2.0
  */
-class CFMessage {
-
+class CFMessage
+{
 public:
 
     /* constants for appconn */
@@ -26,22 +27,27 @@ public:
     static int TEST_SESSION_CALL;
     static int TEST_SESSION_ASYNC_RET;
     static int GET_MEDIA_CALL;
+    // AnytimeInterrogation
+    static int ANYTIME_INTERROGATION_CALL;
 
-    virtual ~CFMessage() {}
+    virtual ~CFMessage()
+    {
+    }
 
     /**
      * Returns the message.
      * @return 8Message
      */
-    virtual Message* toMessage()=0;
+    virtual Message* toMessage() = 0;
 };
 
-int CFMessage::NEW_SESSION_CALL=0x10;
-int CFMessage::EVENT_REPORT_CALL=0x13;
-int CFMessage::WATCH_REPORT_CALL=0x16;
-int CFMessage::SET_SESSION_CALL=0x17;
-int CFMessage::TEST_SESSION_CALL=0x18;
-int CFMessage::TEST_SESSION_ASYNC_RET=0x19;
+int CFMessage::NEW_SESSION_CALL = 0x10;
+int CFMessage::EVENT_REPORT_CALL = 0x13;
+int CFMessage::WATCH_REPORT_CALL = 0x16;
+int CFMessage::SET_SESSION_CALL = 0x17;
+int CFMessage::TEST_SESSION_CALL = 0x18;
+int CFMessage::TEST_SESSION_ASYNC_RET = 0x19;
+int CFMessage::ANYTIME_INTERROGATION_CALL = 0x24;
 
 /**
  * <p>The NewSessionCall class.</p>
@@ -50,8 +56,8 @@ int CFMessage::TEST_SESSION_ASYNC_RET=0x19;
  * @author Eduardo Marin
  * @version 2.0
  */
-class NewSessionCall : public CFMessage {
-
+class NewSessionCall : public CFMessage
+{
     /* private variables */
     Id *id;
     char type;
@@ -71,34 +77,38 @@ public:
      * @param *location Location
      * @param *sessionArg SessionArg
      */
-    NewSessionCall(Id *id, const char &type, const std::string &auxType, Name *name, Location *location, SessionArg *sessionArg) {
-        this->id=id;
-        this->type=type;
-        this->auxType=auxType;
-        this->name=name;
-        this->location=location;
-        this->sessionArg=sessionArg;
+    NewSessionCall(Id *id, const char &type, const std::string &auxType, Name *name, Location *location, SessionArg *sessionArg)
+    {
+        this->id = id;
+        this->type = type;
+        this->auxType = auxType;
+        this->name = name;
+        this->location = location;
+        this->sessionArg = sessionArg;
     }
 
-    ~NewSessionCall() {
-        if(id!=NULL) delete id;
-        if(name!=NULL) delete name;
-        if(location!=NULL) delete location;
-        if(sessionArg!=NULL) delete sessionArg;
+    ~NewSessionCall()
+    {
+        if (id != NULL) delete id;
+        if (name != NULL) delete name;
+        if (location != NULL) delete location;
+        if (sessionArg != NULL) delete sessionArg;
     }
 
-    Message* toMessage() {
+    Message* toMessage()
+    {
         std::vector<IE*> ies;
 
-        IE* idIE=NULL;
-        IE* auxTypeIE=NULL;
-        IE* nameIE=NULL;
-        IE* locationIE=NULL;
-        IE* sessionArgIE=NULL;
+        IE* idIE = NULL;
+        IE* auxTypeIE = NULL;
+        IE* nameIE = NULL;
+        IE* locationIE = NULL;
+        IE* sessionArgIE = NULL;
 
         // id
-        if(id!=NULL) {
-            idIE=id->toIE();
+        if (id != NULL)
+        {
+            idIE = id->toIE();
             ies.push_back(idIE);
         }
 
@@ -107,36 +117,40 @@ public:
         ies.push_back(&typeIE);
 
         // auxType
-        if(auxType.length() > 0) {
-            auxTypeIE=new ByteArrayIE(CFIE::AUX_TYPE_IE, auxType);
+        if (auxType.length() > 0)
+        {
+            auxTypeIE = new ByteArrayIE(CFIE::AUX_TYPE_IE, auxType);
             ies.push_back(auxTypeIE);
         }
 
         // name
-        if(name!=NULL) {
-            nameIE=name->toIE();
+        if (name != NULL)
+        {
+            nameIE = name->toIE();
             ies.push_back(nameIE);
         }
 
         // location
-        if(location!=NULL) {
-            locationIE=location->toIE();
+        if (location != NULL)
+        {
+            locationIE = location->toIE();
             ies.push_back(locationIE);
         }
 
         // sessionArg
-        if(sessionArg!=NULL) {
-            sessionArgIE=sessionArg->toIE();
+        if (sessionArg != NULL)
+        {
+            sessionArgIE = sessionArg->toIE();
             ies.push_back(sessionArgIE);
         }
 
-        Message *msg=AppMessages::newCall(NEW_SESSION_CALL, &ies);
+        Message *msg = AppMessages::newCall(NEW_SESSION_CALL, &ies);
 
-        if(idIE!=NULL) delete idIE;
-        if(auxTypeIE!=NULL) delete auxTypeIE;
-        if(nameIE!=NULL) delete nameIE;
-        if(locationIE!=NULL) delete locationIE;
-        if(sessionArgIE!=NULL) delete sessionArgIE;
+        if (idIE != NULL) delete idIE;
+        if (auxTypeIE != NULL) delete auxTypeIE;
+        if (nameIE != NULL) delete nameIE;
+        if (locationIE != NULL) delete locationIE;
+        if (sessionArgIE != NULL) delete sessionArgIE;
 
         return msg;
     }
@@ -149,8 +163,8 @@ public:
  * @author Eduardo Marin
  * @version 2.0
  */
-class EventReportCall : public CFMessage {
-
+class EventReportCall : public CFMessage
+{
     /* private variables */
     Id *id;
     char type;
@@ -166,27 +180,31 @@ public:
      * @param &eventType const char
      * @param *eventArg EventArg
      */
-    EventReportCall(Id *id, const char &type, const char &eventType, EventArg *eventArg) {
-        this->id=id;
-        this->type=type;
-        this->eventType=eventType;
-        this->eventArg=eventArg;
+    EventReportCall(Id *id, const char &type, const char &eventType, EventArg *eventArg)
+    {
+        this->id = id;
+        this->type = type;
+        this->eventType = eventType;
+        this->eventArg = eventArg;
     }
 
-    ~EventReportCall() {
-        if(id!=NULL) delete id;
-        if(eventArg!=NULL) delete eventArg;
+    ~EventReportCall()
+    {
+        if (id != NULL) delete id;
+        if (eventArg != NULL) delete eventArg;
     }
 
-    Message* toMessage() {
+    Message* toMessage()
+    {
         std::vector<IE*> ies;
 
-        IE* idIE=NULL;
-        IE* eventArgIE=NULL;
+        IE* idIE = NULL;
+        IE* eventArgIE = NULL;
 
         // id
-        if(id!=NULL) {
-            idIE=id->toIE();
+        if (id != NULL)
+        {
+            idIE = id->toIE();
             ies.push_back(idIE);
         }
 
@@ -199,15 +217,16 @@ public:
         ies.push_back(&eventTypeIE);
 
         // eventArg
-        if(eventArg!=NULL) {
-            eventArgIE=eventArg->toIE();
+        if (eventArg != NULL)
+        {
+            eventArgIE = eventArg->toIE();
             ies.push_back(eventArgIE);
         }
 
-        Message *msg=AppMessages::newCall(EVENT_REPORT_CALL, &ies);
+        Message *msg = AppMessages::newCall(EVENT_REPORT_CALL, &ies);
 
-        if(idIE!=NULL) delete idIE;
-        if(eventArgIE!=NULL) delete eventArgIE;
+        if (idIE != NULL) delete idIE;
+        if (eventArgIE != NULL) delete eventArgIE;
 
         return msg;
     }
@@ -220,8 +239,8 @@ public:
  * @author Eduardo Marin
  * @version 2.0
  */
-class WatchReportCall : public CFMessage {
-
+class WatchReportCall : public CFMessage
+{
     /* private variables */
     Id *id;
     char watchType;
@@ -237,28 +256,32 @@ public:
      * @param &watchFlags const char
      * @param *watchArg WatchArg
      */
-    WatchReportCall(Id *id, const char &watchType, const char &watchFlags, WatchArg *watchArg) {
-        this->id=id;
-        this->watchType=watchType;
-        this->watchFlags=watchFlags;
-        this->watchArg=watchArg;
+    WatchReportCall(Id *id, const char &watchType, const char &watchFlags, WatchArg *watchArg)
+    {
+        this->id = id;
+        this->watchType = watchType;
+        this->watchFlags = watchFlags;
+        this->watchArg = watchArg;
     }
 
-    ~WatchReportCall() {
-        if(id!=NULL) delete id;
-        if(watchArg!=NULL) delete watchArg;
+    ~WatchReportCall()
+    {
+        if (id != NULL) delete id;
+        if (watchArg != NULL) delete watchArg;
     }
 
-    Message* toMessage() {
+    Message* toMessage()
+    {
         std::vector<IE*> ies;
 
-        IE* idIE=NULL;
-        IE* watchFlagsIE=NULL;
-        IE* watchArgIE=NULL;
+        IE* idIE = NULL;
+        IE* watchFlagsIE = NULL;
+        IE* watchArgIE = NULL;
 
         // id
-        if(id!=NULL) {
-            idIE=id->toIE();
+        if (id != NULL)
+        {
+            idIE = id->toIE();
             ies.push_back(idIE);
         }
 
@@ -267,22 +290,24 @@ public:
         ies.push_back(&watchTypeIE);
 
         // watchFlags
-        if(watchFlags>=0) {
-            watchFlagsIE=new ByteIE(CFIE::WATCH_FLAGS_IE, watchFlags);
+        if (watchFlags >= 0)
+        {
+            watchFlagsIE = new ByteIE(CFIE::WATCH_FLAGS_IE, watchFlags);
             ies.push_back(watchFlagsIE);
         }
 
         // watchArg
-        if(watchArg!=NULL) {
-            watchArgIE=watchArg->toIE();
+        if (watchArg != NULL)
+        {
+            watchArgIE = watchArg->toIE();
             ies.push_back(watchArgIE);
         }
 
-        Message *msg=AppMessages::newCall(WATCH_REPORT_CALL, &ies);
+        Message *msg = AppMessages::newCall(WATCH_REPORT_CALL, &ies);
 
-        if(idIE!=NULL) delete idIE;
-        if(watchFlagsIE!=NULL) delete watchFlagsIE;
-        if(watchArgIE!=NULL) delete watchArgIE;
+        if (idIE != NULL) delete idIE;
+        if (watchFlagsIE != NULL) delete watchFlagsIE;
+        if (watchArgIE != NULL) delete watchArgIE;
 
         return msg;
     }
@@ -295,8 +320,8 @@ public:
  * @author Eduardo Marin
  * @version 2.0
  */
-class SetSessionRet : public CFMessage {
-
+class SetSessionRet : public CFMessage
+{
     /* private variables */
     char ret;
 
@@ -306,18 +331,20 @@ public:
      * Creates a new instance of SetSessionRet.
      * @param &ret const char
      */
-    SetSessionRet(const char &ret) {
-        this->ret=ret;
+    SetSessionRet(const char &ret)
+    {
+        this->ret = ret;
     }
 
-    Message* toMessage() {
+    Message* toMessage()
+    {
         std::vector<IE*> ies;
 
         // ret
         ByteIE retIE(AppMessages::RET_IE, ret);
         ies.push_back(&retIE);
 
-        Message *msg=AppMessages::newRet(&ies);
+        Message *msg = AppMessages::newRet(&ies);
 
         return msg;
     }
@@ -330,8 +357,8 @@ public:
  * @author Eduardo Marin
  * @version 2.0
  */
-class TestSessionRet : public CFMessage {
-
+class TestSessionRet : public CFMessage
+{
     /* private variables */
     char ret;
 
@@ -341,18 +368,20 @@ public:
      * Creates a new instance of TestSessionRet.
      * @param &ret const char
      */
-    TestSessionRet(const char &ret) {
-        this->ret=ret;
+    TestSessionRet(const char &ret)
+    {
+        this->ret = ret;
     }
 
-    Message* toMessage() {
+    Message* toMessage()
+    {
         std::vector<IE*> ies;
 
         // ret
         ByteIE retIE(AppMessages::RET_IE, ret);
         ies.push_back(&retIE);
 
-        Message *msg=AppMessages::newRet(&ies);
+        Message *msg = AppMessages::newRet(&ies);
 
         return msg;
     }
@@ -365,8 +394,8 @@ public:
  * @author Eduardo Marin
  * @version 2.0
  */
-class TestSessionAsyncRet : public CFMessage {
-
+class TestSessionAsyncRet : public CFMessage
+{
     /* private variables */
     Id *id;
     char ret;
@@ -378,23 +407,27 @@ public:
      * @param *id Id
      * @param &ret const char
      */
-    TestSessionAsyncRet(Id *id, const char &ret) {
-        this->id=id;
-        this->ret=ret;
+    TestSessionAsyncRet(Id *id, const char &ret)
+    {
+        this->id = id;
+        this->ret = ret;
     }
 
-    ~TestSessionAsyncRet() {
-        if(id!=NULL) delete id;
+    ~TestSessionAsyncRet()
+    {
+        if (id != NULL) delete id;
     }
 
-    Message* toMessage() {
+    Message* toMessage()
+    {
         std::vector<IE*> ies;
 
-        IE* idIE=NULL;
+        IE* idIE = NULL;
 
         // id
-        if(id!=NULL) {
-            idIE=id->toIE();
+        if (id != NULL)
+        {
+            idIE = id->toIE();
             ies.push_back(idIE);
         }
 
@@ -402,12 +435,75 @@ public:
         ByteIE retIE(AppMessages::RET_IE, ret);
         ies.push_back(&retIE);
 
-        Message *msg=AppMessages::newAsyncRet(TEST_SESSION_ASYNC_RET, &ies);
+        Message *msg = AppMessages::newAsyncRet(TEST_SESSION_ASYNC_RET, &ies);
 
-        if(idIE!=NULL) delete idIE;
+        if (idIE != NULL) delete idIE;
 
         return msg;
     }
 };
+
+class AnytimeInterrogationRet : public CFMessage
+{
+private:
+    /**
+     * It was inserted from client, its live cycle i defines by the message. The pointer must to
+     * destroy in this class.
+     */
+    Id* id;
+    string cellId;
+    char ret;
+    
+public:
+    AnytimeInterrogationRet(Id* id, string& cellId)
+    {
+        this->id = id;
+        this->cellId = cellId;
+        ret = AppMessages::ACCEPTED;
+    }
+    
+    AnytimeInterrogationRet(const int& ret)
+    {
+        id = NULL;
+        cellId = "";
+        this->ret = ret;
+    }
+    
+    ~AnytimeInterrogationRet()
+    {
+        if (id != NULL)
+        {
+            delete id;
+        }
+    }
+    
+
+    Message* toMessage()
+    {
+        vector<IE*>ies;
+        // ID
+        if (id != NULL)
+        {
+            ies.push_back(id->toIE());
+        }
+        
+        ByteIE retIE(AppMessages::RET_IE, ret);
+        ies.push_back(&retIE);
+        
+        // CellID
+        if (cellId != "")
+        {
+            ies.push_back(new ByteArrayIE(CFIE::SUBSCRIBER_CELL_ID, cellId));
+        }
+        
+        Message* msg = AppMessages::newRet(&ies);
+        return msg;
+    }
+
+};
+
+//class AnytimeInterrogationCall : public CFMessage
+//{
+//};
 
 #endif	/* CFMESSAGE_HPP */

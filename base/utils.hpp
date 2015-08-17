@@ -78,6 +78,43 @@ static void getOctet(const std::string &str, unsigned char *o, int &len)
     }
 }
 
+/**
+ * Returns the semi octet.
+ * @param &str const std::string
+ * @param *so unsigned char
+ * @param &len int
+ */
+static void getSemiOctet(const std::string &str, unsigned char *so, int &len)
+{
+    len = str.length() >> 1;
+    if ((str.length() & 1) == 1)
+    {
+        len++;
+    }
+    
+    for (unsigned char soIndex = 0; soIndex < len; soIndex++)
+    {
+        char tmpO = getHexO(str.at(soIndex << 1));
+        if (tmpO != -1)
+        {
+            so[soIndex] = tmpO;
+        }
+        
+        if (((soIndex << 1) + 1) < (int) str.length())
+        {
+            tmpO = getHexO(str.at((soIndex << 1) + 1));
+            if (tmpO != -1)
+            {
+                so[soIndex] |= tmpO << 4;
+            }
+        }
+        else
+        {
+            so[soIndex] |= 0xf0;
+        }
+    }
+}
+
 typedef enum
 {
     /* states for the server */
@@ -89,5 +126,17 @@ typedef enum
     waitingForInvokeRsp,
     waitingForClose
 } MyState;
+
+/**
+     * Returns the address.
+     * @param &str const std::string
+     * @param *addr unsigned char
+     * @param &len int
+     */
+    static void getAddress(const std::string &str, const unsigned char &toa, unsigned char *addr, int &len) {
+        addr[0]=toa;
+        getSemiOctet(str, &addr[1], len);
+        ++len;
+    }
 
 #endif	/* UTILS_HPP */

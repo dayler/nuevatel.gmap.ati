@@ -32,17 +32,16 @@
             <itemPath>cf/cap/appconn/cfmessage.hpp</itemPath>
           </logicalFolder>
           <itemPath>cf/cap/block.hpp</itemPath>
-          <itemPath>cf/cap/capdialog.hpp</itemPath>
           <itemPath>cf/cap/cftask.hpp</itemPath>
           <itemPath>cf/cap/dialog.hpp</itemPath>
           <itemPath>cf/cap/gmapapp.hpp</itemPath>
+          <itemPath>cf/cap/gmapdialog.hpp</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder name="gmap" displayName="gmap" projectFiles="true">
-        <itemPath>gmap/gblocksm.hpp</itemPath>
-        <itemPath>gmap/gmapconn.hpp</itemPath>
-        <itemPath>gmap/gmapsm.hpp</itemPath>
-      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="properties" displayName="properties" projectFiles="true">
+      <itemPath>properties/gmap.ati.10.properties</itemPath>
+      <itemPath>properties/start_gmap.ati.10.sh</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -69,6 +68,7 @@
     <Elem>base</Elem>
     <Elem>cf</Elem>
     <Elem>gmap</Elem>
+    <Elem>properties</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -137,21 +137,19 @@
       </item>
       <item path="cf/cap/block.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/capdialog.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="cf/cap/cftask.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cf/cap/dialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cf/cap/gmapapp.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="gmap/gblocksm.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="gmap/gmapconn.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="gmap/gmapsm.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/cap/gmapdialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="properties/gmap.ati.10.properties" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="properties/start_gmap.ati.10.sh" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -214,21 +212,19 @@
       </item>
       <item path="cf/cap/block.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/capdialog.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="cf/cap/cftask.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cf/cap/dialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cf/cap/gmapapp.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="gmap/gblocksm.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="gmap/gmapconn.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="gmap/gmapsm.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/cap/gmapdialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="properties/gmap.ati.10.properties" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="properties/start_gmap.ati.10.sh" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

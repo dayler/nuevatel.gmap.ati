@@ -8,6 +8,8 @@
 #include "appconn/cfie.hpp"
 #include "appconn/cfmessage.hpp"
 #include "../../base/appconn/appclient.hpp"
+#include "gmapapp.hpp"
+#include "gmapdialog.hpp"
 
 /**
  * <p>The TestSessionTask class.</p>
@@ -51,5 +53,108 @@ public:
         return TestSessionRet(AppMessages::FAILED).toMessage();
     }
 };
+
+/**
+ * Anytime interrogation call handler. Receive call from handler.
+ */
+class AnytimeInterrogationCall : public Task
+{
+private:
+    DialogMap* dialogMap;
+    PutGBlockQueue* putBlockQueue;
+
+    // To create dialog
+    int appId;
+    int localId;
+    int localPC;
+    string localMSISDN;
+    unsigned char localMSISDNType;
+    int remotePC;
+    string remoteMSISDN;
+    unsigned char remoteMSISDNType;
+    
+    PutGBlockService*  putBlockQueue;
+    AppClient* appClient;
+    Executor* dialogTaskService;
+    
+    MAP_Init* mapInit;
+    
+public:
+    /**
+     * name is MSISDN
+     */
+    static int TYPE_MSISDN;
+
+    /**
+     * name is IMSI
+     */
+    static int TYPE_IMSI;
+    
+    AnytimeInterrogationCall(DialogMap *dialogMap,
+                             MAP_Init* mapInit,
+                             const int& appId,
+                             const int& localId,
+                             
+                             const int& localPC,
+                             string& localMSISDN, // SMSC
+                             unsigned char& localMSISDNType, // SMSC type
+                             int& remotePC, // SW PC
+                             string& remoteMSISDN, // HLR 
+                             unsigned char& remoteMSISDNType, // HLR type
+                             
+                             PutGBlockQueue *putBlockQueue,
+                             AppClient *appClient,
+                             Executor *dialogTaskService) : Task()
+    {
+        this->dialogMap = dialogMap;
+        this->mapInit = mapInit;
+        // To create dialogs
+        this->appId = appId;
+        this->localId = localId;
+        this->localPC = localPC;
+        this->localMSISDN = localMSISDN;
+        this->localMSISDNType = localMSISDNType;
+        this->remotePC = remotePC;
+        this->remoteMSISDN = remoteMSISDN;
+        this->remoteMSISDNType = remoteMSISDNType;
+        // 
+        this->putBlockQueue = putBlockQueue;
+        this->appClient = appClient;
+        this->dialogTaskService =  dialogTaskService;
+    }
+    
+    Message* execute(Conn* conn, Message* msg)
+    {
+        // Get composite props
+        CompositeIE* idIE = msg->getComposite(CFIE::ID_IE);
+        if (idIE == NULL)
+        {
+            return AnytimeInterrogationRet(AppMessages::FAILED).toMessage();
+        }
+        
+        Id id(idIE);
+        char type = msg->getByte(CFIE::TYPE_IE);
+        string name = msg->getString(CFIE::SUBSCRIBER_NAME_IE);
+        ATIDialog* dialog = new ATIDialog(appId,
+                                          localId,
+                                          putBlockQueue,
+                                          dialogTaskService,
+                                          name,
+                                          type,
+                                          mapInit->ssn,
+                                          localPC,
+                                          localMSISDN,
+                                          localMSISDNType,
+                                          remotePC,
+                                          remoteMSISDN,
+                                          remoteMSISDNType);
+        dialogMap->put(dialog);
+        // dispatch blocks
+        dialog->init();
+    }
+};
+
+int AnytimeInterrogationCall::TYPE_MSISDN = 0x1;
+int AnytimeInterrogationCall::TYPE_IMSI = 0x2;
 
 #endif	/* CFTASK_HPP */

@@ -4,7 +4,6 @@
 #ifndef CAPAPP_HPP
 #define	CAPAPP_HPP
 
-#include "gmapapp.hpp"
 #include "cftask.hpp"
 #include "../../base/logger.hpp"
 
@@ -58,20 +57,24 @@ boost::mutex appMutex;
  * @author Eduardo Marin
  * @version 2.0
  */
-class PutBlockService : public PutGBlockQueue
+class PutGBlockService : public PutGBlockQueue
 {
+private:
     /** The dialogMap. */
     DialogMap *dialogMap;
-
+    
+    /**
+     * Gblock instance, unique instance is used through app. The reason is the structure is too long (~10M)
+     */
+    gblock_t gb;
+    
 public:
-
-    PutBlockService(DialogMap *dialogMap)
+    PutGBlockService(DialogMap *dialogMap)
     {
         this->dialogMap = dialogMap;
     }
 
 private:
-
     void run()
     {
         try
@@ -82,17 +85,20 @@ private:
                 while (appState == ONLINE)
                 {
                     GBlock *gblock = blockQueue.waitAndPop();
-                    gblock_t* gb = gblock->getGBlock();
+                    gblock->getGBlock(&gb);
                     //capPrintBlock(capBlock);
                     Dialog *dialog;
                     dialog = gblock->getDialog();
+                    
                     if (dialog->getState() != Dialog::CLOSE_0 && dialog->getState() != Dialog::ABORT_0)
                     {
                         int mapPutBlockRet = -1;
                         {
                             boost::lock_guard<boost::mutex> lock(appMutex);
-                            mapPutBlockRet = gMAPPutGBlock(gblock->getGBlock());
+                            // Dispatch gblock_t to platform
+                            mapPutBlockRet = gMAPPutGBlock(&gb);
                         }
+                        
                         if (mapPutBlockRet == 0)
                         {
                             if (gb->serviceType == GMAP_REQ)
@@ -199,7 +205,7 @@ private:
     DialogMap* dialogMap;
 
     /** The putBlockService. */
-    PutBlockService* putBlockService;
+    PutGBlockService* putBlockService;
 
     /** The taskSet*/
     TaskSet* taskSet;
@@ -231,7 +237,7 @@ public:
         // dialogMap
         dialogMap = new DialogMap();
         // putBlockService
-        putBlockService = new PutBlockService(dialogMap);
+        putBlockService = new PutGBlockService(dialogMap);
         // taskSet
         taskSet = new TaskSet();
         testSessionTask = new TestSessionTask(dialogMap, putBlockService);
