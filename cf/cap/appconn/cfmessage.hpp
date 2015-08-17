@@ -499,7 +499,6 @@ public:
         Message* msg = AppMessages::newRet(&ies);
         return msg;
     }
-
 };
 
 //class AnytimeInterrogationCall : public CFMessage

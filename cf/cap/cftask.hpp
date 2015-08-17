@@ -73,7 +73,6 @@ private:
     string remoteMSISDN;
     unsigned char remoteMSISDNType;
     
-    PutGBlockService*  putBlockQueue;
     AppClient* appClient;
     Executor* dialogTaskService;
     
@@ -95,7 +94,7 @@ public:
                              const int& appId,
                              const int& localId,
                              
-                             const int& localPC,
+                             const int& localPC, // SMSC
                              string& localMSISDN, // SMSC
                              unsigned char& localMSISDNType, // SMSC type
                              int& remotePC, // SW PC
@@ -123,7 +122,7 @@ public:
         this->dialogTaskService =  dialogTaskService;
     }
     
-    Message* execute(Conn* conn, Message* msg)
+    Message* execute(Conn* conn, Message* msg) throw (Exception)
     {
         // Get composite props
         CompositeIE* idIE = msg->getComposite(CFIE::ID_IE);
@@ -139,6 +138,7 @@ public:
                                           localId,
                                           putBlockQueue,
                                           dialogTaskService,
+                                          &id,
                                           name,
                                           type,
                                           mapInit->ssn,
@@ -151,6 +151,9 @@ public:
         dialogMap->put(dialog);
         // dispatch blocks
         dialog->init();
+        
+        
+        return NULL;
     }
 };
 

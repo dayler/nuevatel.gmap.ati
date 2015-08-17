@@ -101,14 +101,14 @@ private:
                         
                         if (mapPutBlockRet == 0)
                         {
-                            if (gb->serviceType == GMAP_REQ)
+                            if (gb.serviceType == GMAP_REQ)
                             {
-                                if (gb->serviceMsg == GMAP_OPEN)
+                                if (gb.serviceMsg == GMAP_OPEN)
                                 {
-                                    dialog->setDialogId(gb->dialogId);
+                                    dialog->setDialogId(gb.dialogId);
                                     dialogMap->put(dialog);
                                 }
-                                else if (gb->serviceMsg == GMAP_CLOSE)
+                                else if (gb.serviceMsg == GMAP_CLOSE)
                                 {
                                     if (dialog->getState() == Dialog::KILL_0)
                                     {
@@ -128,7 +128,7 @@ private:
                         else
                         {
                             std::stringstream ss;
-                            ss << "capPutBlock failed " << gb->serviceMsg << " ";
+                            ss << "capPutBlock failed " << gb.serviceMsg << " ";
                             ss << std::hex << dialog->getDialogId();
                             Logger::getLogger()->logp(&Level::SEVERE, "PutBlockService", "run", ss.str());
                             dialog->setState(Dialog::ABORT_0);
@@ -168,13 +168,22 @@ public:
     static string LOCAL_ID;
     static string REMOTE_ID;
     static string LOGICAL_NAME;
-    static string SSN;
     static string N_DIALOGS;
     static string N_INVOKES;
     static string N_COM_BUFS;
     static string NODE_NAME;
     static string STAND_ALONE;
-
+    
+    static string LOCAL_PC;
+    static string LOCAL_GT;
+    static string LOCAL_GT_TYPE;
+    static string LOCAL_SSN;
+    
+    static string REMOTE_PC;
+    static string REMOTE_GT;
+    static string REMOTE_GT_TYPE;
+    static string REMOTE_SSN;
+    
 private:
 
     /** The argc. */
@@ -191,7 +200,16 @@ private:
 
     /** The remoteId. */
     int remoteId;
-
+    
+    int localPC;
+    string localGT;
+    unsigned char localGTType;
+    
+    int remotePC;
+    string remoteGT;
+    unsigned char remoteGTType;
+    int remoteSSN;
+    
     /**
      * gmap initialization structure
      */
@@ -607,7 +625,7 @@ private:
         }
 
         // localId
-        std::string strLocalId = properties->getProperty(LOCAL_ID);
+        string strLocalId = properties->getProperty(LOCAL_ID);
         if (strLocalId.length() > 0)
         {
             localId = atoi(strLocalId.c_str());
@@ -618,8 +636,11 @@ private:
         }
 
         // remoteId
-        std::string strRemoteId = properties->getProperty(REMOTE_ID);
-        if (strRemoteId.length() > 0) remoteId = atoi(strRemoteId.c_str());
+        string strRemoteId = properties->getProperty(REMOTE_ID);
+        if (strRemoteId.length() > 0)
+        {
+            remoteId = atoi(strRemoteId.c_str());
+        }
         else
         {
             throw Exception("illegal " + REMOTE_ID, __FILE__, __LINE__);
@@ -631,20 +652,100 @@ private:
         {
             throw Exception("illegal " + LOGICAL_NAME, __FILE__, __LINE__);
         }
-
-        // capInit.ssn
-        std::string strSSN = properties->getProperty(SSN, "146");
+        
+        // capInit.nodeName
+        string nodeName = properties->getProperty(NODE_NAME);
+        if (nodeName.length() > 0)
+        {
+            strcoll(gMAPInit.nodeName, nodeName.c_str());
+        }
+        else
+        {
+            throw Exception("illegal " + NODE_NAME, __FILE__, __LINE__);
+        }
+        
+        // Local PC
+        string strLocalPC = properties->getProperty(LOCAL_PC);
+        if (strLocalPC.length() > 0)
+        {
+            localPC = atoi(strLocalPC.c_str());
+        }
+        else
+        {
+            throw Exception("Illegal " + LOCAL_PC, __FILE__, __LINE__);
+        }
+        
+        // local GT
+        localGT = properties->getProperty(LOCAL_GT);
+        if (localGT.length() == 0)
+        {
+            throw Exception("Illegal " + LOCAL_GT, __FILE__, __LINE__);
+        }
+        
+        // Local GT Type
+        string strLocalGTType = properties->getProperty(LOCAL_GT_TYPE);
+        if (strLocalGTType.length() > 0)
+        {
+            localGTType = atoi(strLocalGTType.c_str());
+        }
+        else
+        {
+            throw Exception("Illegal " + LOCAL_GT_TYPE, __FILE__, __LINE__);
+        }
+        
+        // gMAPInit.ssn.ssn
+        string strSSN = properties->getProperty(LOCAL_SSN, "8");
         if (strSSN.length() > 0)
         {
             gMAPInit.ssn = (unsigned char) atoi(strSSN.c_str());
         }
         else
         {
-            throw Exception("illegal " + SSN, __FILE__, __LINE__);
+            throw Exception("illegal " + LOCAL_SSN, __FILE__, __LINE__);
         }
-
+        
+        // remote PC
+        string strRemotePC = properties->getProperty(REMOTE_PC);
+        if (strRemotePC.length() > 0)
+        {
+            remotePC = atoi(strRemotePC.c_str());
+        }
+        else
+        {
+            throw Exception("Illegal " + REMOTE_PC, __FILE__, __LINE__);
+        }
+        
+        // remote GT
+        remoteGT = properties->getProperty(REMOTE_GT);
+        if (remoteGT.length() == 0)
+        {
+            throw Exception("Illegal " + REMOTE_GT, __FILE__, __LINE__);
+        }
+        
+        // remote GT type
+        string strRemoteGTType = properties->getProperty(REMOTE_GT_TYPE);
+        if (strLocalGTType.length() > 0)
+        {
+            remoteGTType = atoi(strRemoteGTType.c_str());
+        }
+        else
+        {
+            throw Exception("Illegal " + REMOTE_GT_TYPE, __FILE__, __LINE__);
+        }
+        
+        // remote SSN
+        string strRemoteSSN = properties->getProperty(REMOTE_SSN);
+        if (strRemoteSSN.length() > 0)
+        {
+            remoteSSN = atoi(strRemoteSSN.c_str());
+        }
+        else
+        {
+            throw Exception("Illegal " + REMOTE_SSN, __FILE__, __LINE__);
+        }
+        
         // capInit.nDialogs
-        std::string strNDialogs = properties->getProperty(N_DIALOGS, "16383");
+        string strNDialogs = properties->getProperty(N_DIALOGS, "16383");
         if (strNDialogs.length() > 0)
         {
             gMAPInit.nDialogs = atoi(strNDialogs.c_str());
@@ -655,7 +756,7 @@ private:
         }
 
         // capInit.nInvokes
-        std::string strNInvokes = properties->getProperty(N_INVOKES, "16383");
+        string strNInvokes = properties->getProperty(N_INVOKES, "16383");
         if (strNInvokes.length() > 0)
         {
             gMAPInit.nInvokes = atoi(strNInvokes.c_str());
@@ -663,17 +764,6 @@ private:
         else
         {
             throw Exception("illegal " + N_INVOKES, __FILE__, __LINE__);
-        }
-
-        // capInit.nodeName
-        std::string nodeName = properties->getProperty(NODE_NAME);
-        if (nodeName.length() > 0)
-        {
-            strcoll(gMAPInit.nodeName, nodeName.c_str());
-        }
-        else
-        {
-            throw Exception("illegal " + NODE_NAME, __FILE__, __LINE__);
         }
 
         // standAlone
@@ -689,14 +779,23 @@ private:
     }
 };
 
-std::string GMAPApp::LOCAL_ID = "localId";
-std::string GMAPApp::REMOTE_ID = "remoteId";
-std::string GMAPApp::LOGICAL_NAME = "logicalName";
-std::string GMAPApp::SSN = "SSN";
-std::string GMAPApp::N_DIALOGS = "nDialogs";
-std::string GMAPApp::N_INVOKES = "nInvokes";
-std::string GMAPApp::N_COM_BUFS = "nComBufs";
-std::string GMAPApp::NODE_NAME = "nodeName";
-std::string GMAPApp::STAND_ALONE = "standAlone";
+string GMAPApp::LOCAL_ID = "localId";
+string GMAPApp::REMOTE_ID = "remoteId";
+string GMAPApp::LOGICAL_NAME = "logicalName";
+string GMAPApp::N_DIALOGS = "nDialogs";
+string GMAPApp::N_INVOKES = "nInvokes";
+string GMAPApp::N_COM_BUFS = "nComBufs";
+string GMAPApp::NODE_NAME = "nodeName";
+string GMAPApp::STAND_ALONE = "standAlone";
+
+string GMAPApp::LOCAL_PC = "localPC";
+string GMAPApp::LOCAL_GT = "localGT";
+string GMAPApp::LOCAL_GT_TYPE = "localGTType";
+string GMAPApp::LOCAL_SSN = "localSSN";
+
+string GMAPApp::REMOTE_PC = "remotePC";
+string GMAPApp::REMOTE_GT = "remoteGT";
+string GMAPApp::REMOTE_GT_TYPE = "remoteGTType";
+string GMAPApp::REMOTE_SSN = "remoteSSN";
 
 #endif	/* CAPAPP_HPP */
