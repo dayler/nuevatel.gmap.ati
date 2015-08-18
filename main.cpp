@@ -77,8 +77,8 @@ int main(int argc, char** argv)
 
     try
     {
-        GMAPApp capApp(argc, argv, &properties);
-        capApp.start();
+        GMAPApp gmapApp(argc, argv, &properties);
+        gmapApp.start();
         int s = 0;
 
         while (appState != ONLINE)

@@ -42,8 +42,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-mt -m64 -library=stlport4,no%Cstd -R/opt/ulcm/library -L/usr/local/lib -L/opt/ulcm/library -pthreads -lboost_thread -lresolv -lnsl -lFt -ldf -lapi -lscos -lsccp -lsocket -lrt -ldgms -lm -lswrmm -loos -ltcap -lcapv480
-CXXFLAGS=-mt -m64 -library=stlport4,no%Cstd -R/opt/ulcm/library -L/usr/local/lib -L/opt/ulcm/library -pthreads -lboost_thread -lresolv -lnsl -lFt -ldf -lapi -lscos -lsccp -lsocket -lrt -ldgms -lm -lswrmm -loos -ltcap -lcapv480
+CCFLAGS=-mt -m64 -library=stlport4,no%Cstd -R/opt/ulcm/library -L/usr/local/lib -L/opt/ulcm/library -pthreads -lboost_thread -lresolv -lnsl -lFt -ldf -lapi -lscos -lsccp -lsocket -lrt -ldgms -lm -lswrmm -loos -ltcap -lgmap2
+CXXFLAGS=-mt -m64 -library=stlport4,no%Cstd -R/opt/ulcm/library -L/usr/local/lib -L/opt/ulcm/library -pthreads -lboost_thread -lresolv -lnsl -lFt -ldf -lapi -lscos -lsccp -lsocket -lrt -ldgms -lm -lswrmm -loos -ltcap -lgmap2
 
 # Fortran Compiler Flags
 FFLAGS=
