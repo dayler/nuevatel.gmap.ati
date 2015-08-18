@@ -85,10 +85,10 @@ public:
               string& name,
               char& type,
               unsigned char& localSSN,
-              unsigned int& localPC,
+              const int& localPC,
               string& localMSISDN,
               unsigned char& localMSISDNType,
-              unsigned int& remotePC,
+              const int& remotePC,
               string& remoteMSISDN,
               unsigned char& remoteMSISDNType)
     {

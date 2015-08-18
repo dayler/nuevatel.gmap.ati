@@ -138,6 +138,8 @@ public:
                                           localId,
                                           putBlockQueue,
                                           dialogTaskService,
+                                          appClient,
+                                          // 
                                           &id,
                                           name,
                                           type,
