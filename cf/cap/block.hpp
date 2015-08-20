@@ -797,7 +797,7 @@ public:
      * Set gblock_t with block and dialog properties.
      * 
      */
-    void getGBlock(gblock_t* gb)
+    virtual void getGBlock(gblock_t* gb)
     {
         // Set dialog properties
         gb->bit_mask = bitMask;
@@ -916,6 +916,7 @@ public:
         // Set gblock_t with initial properties
         GBlock::getGBlock(gb);
         gb->parameter.openArg.bit_mask = MAP_OpenArg_originatingAddress_present;
+        
         memcpy(&gb->parameter.openArg.applicationContext, objectId, sizeof (ObjectID));
         // originatingAddress
         gb->parameter.openArg.originatingAddress.bit_mask = MAP_SccpAddr_gt_present;
@@ -1091,6 +1092,9 @@ public:
 
     void getGBlock(gblock_t* gb)
     {
+        cout<<"+++ ErrorBlock +++"<<endl;
+        
+        
         GBlock::getGBlock(gb);
     }
 };

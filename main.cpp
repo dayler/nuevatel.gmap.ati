@@ -47,6 +47,11 @@ public:
             ss << '0';
         }
         ss << timestamp->tm_sec;
+        ss << ' ' << logRecord->getLevel()->getName();
+        ss << ' ' << logRecord->getSourceClass();
+        ss << '.' << logRecord->getSourceMethod();
+        ss << ' ' << logRecord->getMessage();
+        cout << ss.str() << std::endl;
     }
     
 
@@ -54,8 +59,6 @@ public:
     {
         // No op
     }
-
-
 };
 
 /*
@@ -66,14 +69,19 @@ int main(int argc, char** argv)
     // logger
     LoggerHandler handler;
     Logger::getLogger()->setHandler(&handler);
-
-    if (argc == 0) {
-        cerr << "usage: gmap.ati <properties>" << endl;
-        return 0;
-    }
-
     Properties properties;
-    properties.load(argv[1]);
+    
+    if (argc > 1)
+    {
+        // Properties properties;
+        properties.load(argv[1]);
+        cout<<argv[1]<<endl;
+    }
+    else
+    {
+        properties.load("/cf/properties/gmap.ati.10.properties");
+        cout<<"using default /cf/properties/gmap.ati.10.properties"<<endl;
+    }
 
     try
     {
@@ -88,8 +96,10 @@ int main(int argc, char** argv)
             {
                 break;
             }
+            
+            cout<<"APP OFF LINE..."<<endl;
         }
-
+        
         if (appState == ONLINE)
         {
             while (appState == ONLINE)

@@ -83,7 +83,7 @@ public:
      * name is MSISDN
      */
     static int TYPE_MSISDN;
-
+    
     /**
      * name is IMSI
      */
@@ -150,12 +150,13 @@ public:
                                           remotePC,
                                           remoteMSISDN,
                                           remoteMSISDNType);
-        dialogMap->put(dialog);
         // dispatch blocks
         dialog->init();
-        
-        
-        return NULL;
+        dialogMap->put(dialog);
+        cout<<"[dialog->getCellId...]"<<endl;
+        const char* rawCellId = dialog->getCellId();
+        cout<<"[...dialog->getCellId]->"<<rawCellId<<endl;
+        return AnytimeInterrogationRet(&id, rawCellId).toMessage();
     }
 };
 

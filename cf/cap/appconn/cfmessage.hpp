@@ -455,17 +455,17 @@ private:
     char ret;
     
 public:
-    AnytimeInterrogationRet(Id* id, string& cellId)
+    AnytimeInterrogationRet(Id* id, const char* rawCellId)
     {
         this->id = id;
-        this->cellId = cellId;
+        cellId.assign(rawCellId);
         ret = AppMessages::ACCEPTED;
     }
     
     AnytimeInterrogationRet(const int& ret)
     {
         id = NULL;
-        cellId = "";
+        //cellId = "";
         this->ret = ret;
     }
     
@@ -491,9 +491,13 @@ public:
         ies.push_back(&retIE);
         
         // CellID
-        if (cellId != "")
+        if (cellId.length() > 0)
         {
             ies.push_back(new ByteArrayIE(CFIE::SUBSCRIBER_CELL_ID, cellId));
+        }
+        else 
+        {
+            cout<<"Cell Id is null..."<<endl;
         }
         
         Message* msg = AppMessages::newRet(&ies);

@@ -41,7 +41,7 @@
     </logicalFolder>
     <logicalFolder name="properties" displayName="properties" projectFiles="true">
       <itemPath>properties/gmap.ati.10.properties</itemPath>
-      <itemPath>properties/start_gmap.ati.10.sh</itemPath>
+      <itemPath>properties/start_standalone_gmap.ati.10.sh</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -85,7 +85,7 @@
             <pElem>/usr/local/include</pElem>
             <pElem>/opt/ulcm/include</pElem>
           </incDir>
-          <commandLine>-library=stlport4,no%Cstd -R/opt/ulcm/library -L/usr/local/lib -L/opt/ulcm/library -pthreads -lboost_thread -lresolv -lnsl -lFt -ldf -lapi -lscos -lsccp -lsocket -lrt -ldgms -lm -lswrmm -loos -ltcap -lgmap2</commandLine>
+          <commandLine>-library=stlport4,no%Cstd -R/opt/ulcm/library -L/usr/local/lib -L/opt/ulcm/library -pthreads -lboost_thread -lresolv -lnsl -lFt -ldf -lapi -lscos -lsccp -lsocket -lrt -ldgms -lm -lswrmm -loos -ltcap -lcc -lgen -lpthread -loos -ltcap -lgmap2</commandLine>
           <preprocessorList>
             <Elem>C7_Q</Elem>
             <Elem>_REENTRANT</Elem>
@@ -149,7 +149,10 @@
       </item>
       <item path="properties/gmap.ati.10.properties" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="properties/start_gmap.ati.10.sh" ex="false" tool="3" flavor2="0">
+      <item path="properties/start_standalone_gmap.ati.10.sh"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -224,7 +227,10 @@
       </item>
       <item path="properties/gmap.ati.10.properties" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="properties/start_gmap.ati.10.sh" ex="false" tool="3" flavor2="0">
+      <item path="properties/start_standalone_gmap.ati.10.sh"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
     </conf>
   </confs>

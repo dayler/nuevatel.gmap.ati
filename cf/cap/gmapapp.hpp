@@ -86,7 +86,7 @@ private:
                 {
                     GBlock *gblock = blockQueue.waitAndPop();
                     gblock->getGBlock(&gb);
-                    //capPrintBlock(capBlock);
+                    // gMAPPrintGBlock(&gb);
                     Dialog *dialog;
                     dialog = gblock->getDialog();
                     
@@ -116,7 +116,7 @@ private:
                                         std::stringstream ss;
                                         ss << "dialog killed ";
                                         ss << std::hex << dialog->getDialogId();
-                                        Logger::getLogger()->logp(&Level::WARNING, "PutBlockService", "run", ss.str());
+                                        Logger::getLogger()->logp(&Level::WARNING, "PutGBlockService", "run", ss.str());
                                     }
                                     else
                                     {
@@ -128,7 +128,7 @@ private:
                         else
                         {
                             std::stringstream ss;
-                            ss << "capPutBlock failed " << gb.serviceMsg << " ";
+                            ss << "mapPutBlock failed " << gb.serviceMsg << " ";
                             ss << std::hex << dialog->getDialogId();
                             Logger::getLogger()->logp(&Level::SEVERE, "PutBlockService", "run", ss.str());
                             dialog->setState(Dialog::ABORT_0);
@@ -228,9 +228,10 @@ private:
     /** The taskSet*/
     TaskSet* taskSet;
     TestSessionTask* testSessionTask;
+    AnytimeInterrogationCall* atiTask;
 
     /** The appClient. */
-    AppClient *appClient;
+    AppClient* appClient;
 
     /** The dialogTaskService. */
     Executor *dialogTaskService;
@@ -259,7 +260,22 @@ public:
         // taskSet
         taskSet = new TaskSet();
         testSessionTask = new TestSessionTask(dialogMap, putBlockService);
+        atiTask = new AnytimeInterrogationCall(dialogMap,
+                                               &gMAPInit,
+                                               appId,
+                                               localId,
+                                               localPC,
+                                               localGT,
+                                               localGTType,
+                                               remotePC,
+                                               remoteGT,
+                                               remoteGTType,
+                                               putBlockService,
+                                               appClient,
+                                               dialogTaskService);
+        // Populate appconn tasks
         taskSet->add(CFMessage::TEST_SESSION_CALL, testSessionTask);
+        taskSet->add(CFMessage::ANYTIME_INTERROGATION_CALL, atiTask);
         // appClient
         appClient = new AppClient(localId, remoteId, taskSet, properties);
         // dialogTaskService
@@ -271,8 +287,11 @@ public:
         interrupt();
         delete dialogTaskService;
         delete appClient;
+        // delete tasks
         delete testSessionTask;
+        delete atiTask;
         delete taskSet;
+        // 
         delete putBlockService;
         delete dialogMap;
     }
@@ -336,6 +355,7 @@ public:
             }
 
             // SYSattach
+            cout<<"["<<gMAPInit.nodeName<<"]"<<endl;
             int gAliasNameIndex = SYSattach(gMAPInit.nodeName, FALSE);
             if (gAliasNameIndex == RETURNerror)
             {
@@ -629,6 +649,7 @@ private:
         if (strLocalId.length() > 0)
         {
             localId = atoi(strLocalId.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "localId=" + localId);
         }
         else
         {
@@ -640,6 +661,7 @@ private:
         if (strRemoteId.length() > 0)
         {
             remoteId = atoi(strRemoteId.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "remoteId=" + remoteId);
         }
         else
         {
@@ -648,6 +670,7 @@ private:
 
         // logicalName
         logicalName = properties->getProperty(LOGICAL_NAME);
+        Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "logicalName=" + logicalName);
         if (logicalName.length() == 0)
         {
             throw Exception("illegal " + LOGICAL_NAME, __FILE__, __LINE__);
@@ -657,7 +680,8 @@ private:
         string nodeName = properties->getProperty(NODE_NAME);
         if (nodeName.length() > 0)
         {
-            strcoll(gMAPInit.nodeName, nodeName.c_str());
+            strcpy(gMAPInit.nodeName, nodeName.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", string("nodeName=") + string(gMAPInit.nodeName));
         }
         else
         {
@@ -669,6 +693,7 @@ private:
         if (strLocalPC.length() > 0)
         {
             localPC = atoi(strLocalPC.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "localPC=" + localPC);
         }
         else
         {
@@ -677,6 +702,7 @@ private:
         
         // local GT
         localGT = properties->getProperty(LOCAL_GT);
+        Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "localGT=" + localGT);
         if (localGT.length() == 0)
         {
             throw Exception("Illegal " + LOCAL_GT, __FILE__, __LINE__);
@@ -687,6 +713,7 @@ private:
         if (strLocalGTType.length() > 0)
         {
             localGTType = atoi(strLocalGTType.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "localGTType=" + localGTType);
         }
         else
         {
@@ -698,6 +725,7 @@ private:
         if (strSSN.length() > 0)
         {
             gMAPInit.ssn = (unsigned char) atoi(strSSN.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "localSSN=" + gMAPInit.ssn);
         }
         else
         {
@@ -709,6 +737,7 @@ private:
         if (strRemotePC.length() > 0)
         {
             remotePC = atoi(strRemotePC.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "remotePC=" + remotePC);
         }
         else
         {
@@ -717,6 +746,7 @@ private:
         
         // remote GT
         remoteGT = properties->getProperty(REMOTE_GT);
+        Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "remoteGT=" + remoteGT);
         if (remoteGT.length() == 0)
         {
             throw Exception("Illegal " + REMOTE_GT, __FILE__, __LINE__);
@@ -727,6 +757,7 @@ private:
         if (strLocalGTType.length() > 0)
         {
             remoteGTType = atoi(strRemoteGTType.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "remoteGTType=" + remoteGTType);
         }
         else
         {
@@ -738,6 +769,7 @@ private:
         if (strRemoteSSN.length() > 0)
         {
             remoteSSN = atoi(strRemoteSSN.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "remoteSSN=" + remoteSSN);
         }
         else
         {
@@ -749,6 +781,7 @@ private:
         if (strNDialogs.length() > 0)
         {
             gMAPInit.nDialogs = atoi(strNDialogs.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "nDialogs=" + gMAPInit.nDialogs);
         }
         else
         {
@@ -760,6 +793,7 @@ private:
         if (strNInvokes.length() > 0)
         {
             gMAPInit.nInvokes = atoi(strNInvokes.c_str());
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "nInvokes=" + gMAPInit.nInvokes);
         }
         else
         {
@@ -771,10 +805,12 @@ private:
         if (strStandAlone.compare("true") == 0)
         {
             standAlone = true;
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "standAlone=true");
         }
         else
         {
             standAlone = false;
+            Logger::getLogger()->logp(&Level::FINE, "GMAPApp", "setProperties", "standAlone=false");
         }
     }
 };

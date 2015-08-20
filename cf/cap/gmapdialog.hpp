@@ -4,6 +4,8 @@
 #ifndef CAPDIALOG_HPP
 #define	CAPDIALOG_HPP
 
+#include <boost/thread.hpp>
+
 #include "block.hpp"
 #include "appconn/cfie.hpp"
 #include "appconn/cfmessage.hpp"
@@ -13,6 +15,9 @@
 class ATIDialog : public Dialog
 {
 private:
+    boost::mutex mx;
+    boost::condition_variable sync;
+    
     int appId;
     int localId;
     
@@ -72,6 +77,8 @@ private:
      */
     AppClient* appClient;
     
+    string* strCellId;
+    
 public:
     static U8 REMOTE_GT_SSN;
     
@@ -108,13 +115,21 @@ public:
         this->remotePC = remotePC;
         this->remoteMSISDN = remoteMSISDN;
         this->remoteMSISDNType = remoteMSISDNType;
+        // 
+        strCellId = new string();
     }
     
     ~ATIDialog()
     {
-        if (idIE == NULL)
+        cout<<"call ati destroy..."<<endl;
+        if (idIE != NULL)
         {
             delete idIE;
+        }
+        
+        if (strCellId != NULL)
+        {
+            delete strCellId;
         }
     }
     
@@ -152,12 +167,13 @@ public:
             }
             else if (gb->serviceMsg == ANY_TIME_INTERROGATION) // ANY_TIME_INTERROGATION
             {
-                Address addr((char*)gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.value,
-                             gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.length);
-                // TODO
-                // schedule to dispatch cfMessage
-                string tmpCellID = "654321";
-                cfMessageQueue.push(new AnytimeInterrogationRet(idIE, tmpCellID));
+//                CellGlobalId tmpCellGlobalId((char*)gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.value,
+//                                             gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.length);
+//                
+//                cout<<">>>>> "<<tmpCellGlobalId.getCellGlobalId().c_str()<<endl;
+                string str ("234");
+                setCellId(str);
+                //cfMessageQueue.push(new AnytimeInterrogationRet(idIE, tmpCellID));
                 // Set state
                 setState(INVOKE);
                 // submit to task service
@@ -184,24 +200,23 @@ public:
         }
     }
     
-    
     void run()
     {
-        CFMessage* cfMessage = cfMessageQueue.waitAndPop();
-        Message* msg = cfMessage->toMessage();
-        Message* ret = NULL;
-        
-        try
-        {
-            ret = appClient->dispatch(msg);
-        }
-        catch(Exception ex)
-        {
-            Logger::getLogger()->logp(&Level::WARNING, "GMAP Dialog", "run", ex.toString());
-        }
+//        CFMessage* cfMessage = cfMessageQueue.waitAndPop();
+//        Message* msg = cfMessage->toMessage();
+//        Message* ret = NULL;
+//        
+//        try
+//        {
+//            ret = appClient->dispatch(msg);
+//        }
+//        catch(Exception ex)
+//        {
+//            Logger::getLogger()->logp(&Level::WARNING, "GMAP Dialog", "run", ex.toString());
+//        }
         
         // Dialog ready to close
-        setState(W_CLOSE_0);
+        setState(W_CLOSE_1);
     }
     
     void check()
@@ -249,6 +264,40 @@ public:
         {
             return false;
         }
+    }
+    
+    void setCellId(string& cellId)
+    {
+        cout<<"[setCellId]"<<endl;
+        
+        boost::mutex::scoped_lock lck(mx);
+        //strCellId->assign(cellId->c_str());
+        strCellId->assign(cellId.c_str());
+        sync.notify_all();
+        
+    }
+    
+    /**
+     * Get and wait cell id, 
+     * 
+     * @param cellId cell id reference.
+     */
+    const char* getCellId()
+    {
+        cout<<"[1]"<<endl;
+        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(30000);
+        boost::mutex::scoped_lock lck(mx);
+        
+        while (strCellId->length() == 0)
+        {
+            if (!sync.timed_wait(lck, timeout))
+            {
+                return NULL;
+            }
+        }
+
+        cout<<"[2] "<<endl;
+        return "666";
     }
 };
 
