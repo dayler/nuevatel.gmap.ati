@@ -23,7 +23,6 @@ private:
     
     PutGBlockQueue* putGBlockQueue;
     Executor* dialogTaskService;
-    Queue<CFMessage>cfMessageQueue;
     
     /**
      * To dispatch the response message.
@@ -77,7 +76,7 @@ private:
      */
     AppClient* appClient;
     
-    string* strCellId;
+    string strCellId;
     
 public:
     static U8 REMOTE_GT_SSN;
@@ -116,20 +115,14 @@ public:
         this->remoteMSISDN = remoteMSISDN;
         this->remoteMSISDNType = remoteMSISDNType;
         // 
-        strCellId = new string();
     }
     
     ~ATIDialog()
     {
-        cout<<"call ati destroy..."<<endl;
+        cout<<"~ATIDialog"<<endl;
         if (idIE != NULL)
         {
             delete idIE;
-        }
-        
-        if (strCellId != NULL)
-        {
-            delete strCellId;
         }
     }
     
@@ -167,12 +160,14 @@ public:
             }
             else if (gb->serviceMsg == ANY_TIME_INTERROGATION) // ANY_TIME_INTERROGATION
             {
-//                CellGlobalId tmpCellGlobalId((char*)gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.value,
-//                                             gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.length);
-//                
-//                cout<<">>>>> "<<tmpCellGlobalId.getCellGlobalId().c_str()<<endl;
-                string str ("234");
-                setCellId(str);
+                CellGlobalId tmpCellGlobalId((char*)gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.value,
+                                             gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.length);
+                
+                cout<<">>>>> "<<tmpCellGlobalId.getCellGlobalId().c_str()<<endl;
+                string tmpStr = tmpCellGlobalId.getCellGlobalId();
+                setCellId(tmpStr);
+//                string str ("234");
+//                setCellId(str);
                 //cfMessageQueue.push(new AnytimeInterrogationRet(idIE, tmpCellID));
                 // Set state
                 setState(INVOKE);
@@ -202,6 +197,7 @@ public:
     
     void run()
     {
+        cout<<"ATIDialog#run"<<endl;
 //        CFMessage* cfMessage = cfMessageQueue.waitAndPop();
 //        Message* msg = cfMessage->toMessage();
 //        Message* ret = NULL;
@@ -231,7 +227,7 @@ public:
         }
         else if (getState() == W_CLOSE_1)
         {
-            putGBlockQueue->push(new CloseReqBlock(this));
+            // putGBlockQueue->push(new CloseReqBlock(this));
         }
         else if (getState() == ABORT_0)
         {
@@ -239,7 +235,7 @@ public:
         }
         else if (getState() == KILL_0)
         {
-            putGBlockQueue->push(new CloseReqBlock(this));
+            // putGBlockQueue->push(new CloseReqBlock(this));
         }
     }
     
@@ -268,11 +264,8 @@ public:
     
     void setCellId(string& cellId)
     {
-        cout<<"[setCellId]"<<endl;
-        
         boost::mutex::scoped_lock lck(mx);
-        //strCellId->assign(cellId->c_str());
-        strCellId->assign(cellId.c_str());
+        strCellId.assign(cellId.c_str());
         sync.notify_all();
         
     }
@@ -284,20 +277,17 @@ public:
      */
     const char* getCellId()
     {
-        cout<<"[1]"<<endl;
         boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(30000);
         boost::mutex::scoped_lock lck(mx);
-        
-        while (strCellId->length() == 0)
+        while (strCellId.length() == 0)
         {
             if (!sync.timed_wait(lck, timeout))
             {
                 return NULL;
             }
         }
-
-        cout<<"[2] "<<endl;
-        return "666";
+        
+        return strCellId.c_str();
     }
 };
 

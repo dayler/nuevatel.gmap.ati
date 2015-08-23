@@ -257,8 +257,14 @@ public:
         dialogMap = new DialogMap();
         // putBlockService
         putBlockService = new PutGBlockService(dialogMap);
+        // dialogTaskService
+        dialogTaskService = new Executor();
         // taskSet
         taskSet = new TaskSet();
+        
+        // appClient
+        appClient = new AppClient(localId, remoteId, taskSet, properties);
+        
         testSessionTask = new TestSessionTask(dialogMap, putBlockService);
         atiTask = new AnytimeInterrogationCall(dialogMap,
                                                &gMAPInit,
@@ -276,10 +282,6 @@ public:
         // Populate appconn tasks
         taskSet->add(CFMessage::TEST_SESSION_CALL, testSessionTask);
         taskSet->add(CFMessage::ANYTIME_INTERROGATION_CALL, atiTask);
-        // appClient
-        appClient = new AppClient(localId, remoteId, taskSet, properties);
-        // dialogTaskService
-        dialogTaskService = new Executor();
     }
 
     ~GMAPApp()

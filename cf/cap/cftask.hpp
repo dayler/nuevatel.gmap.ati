@@ -122,6 +122,12 @@ public:
         this->dialogTaskService =  dialogTaskService;
     }
     
+    virtual ~AnytimeInterrogationCall()
+    {
+        cout<<"~AnytimeInterrogationCall"<<endl;
+        // no op
+    }
+    
     Message* execute(Conn* conn, Message* msg) throw (Exception)
     {
         // Get composite props
@@ -132,8 +138,12 @@ public:
         }
         
         Id id(idIE);
+        cout<<"*************** "<<id.getId1()<< " ***************"<<endl;
+        cout<<"[1]"<<endl;
         char type = msg->getByte(CFIE::TYPE_IE);
+        cout<<"[2]"<<endl;
         string name = msg->getString(CFIE::SUBSCRIBER_NAME_IE);
+        cout<<"[3]"<<endl;
         ATIDialog* dialog = new ATIDialog(appId,
                                           localId,
                                           putBlockQueue,
@@ -150,13 +160,15 @@ public:
                                           remotePC,
                                           remoteMSISDN,
                                           remoteMSISDNType);
+        cout<<"[4]"<<endl;
         // dispatch blocks
         dialog->init();
-        dialogMap->put(dialog);
+        cout<<"[5]"<<endl;
+        //dialogMap->put(dialog);
         cout<<"[dialog->getCellId...]"<<endl;
         const char* rawCellId = dialog->getCellId();
         cout<<"[...dialog->getCellId]->"<<rawCellId<<endl;
-        return AnytimeInterrogationRet(&id, rawCellId).toMessage();
+        return AnytimeInterrogationRet(NULL, rawCellId).toMessage();
     }
 };
 
