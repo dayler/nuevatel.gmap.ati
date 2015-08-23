@@ -12,11 +12,72 @@
 #include "../../base/appconn/appclient.hpp"
 #include "gmapapp.hpp"
 
-class ATIDialog : public Dialog
+class ATIDelegate
 {
 private:
     boost::mutex mx;
     boost::condition_variable sync;
+    
+    string cellId;
+    
+public:
+    ATIDelegate()
+    {
+        // No op
+    }
+    
+    ~ATIDelegate()
+    {
+        cout<<"~ATIDelegate"<<endl;
+        // No op
+    }
+    
+    void setCellId(string& cellId)
+    {
+        boost::mutex::scoped_lock lck(mx);
+        this->cellId.assign(cellId.c_str());
+        sync.notify_all();
+    }
+    
+//    const char* getCellId()
+//    {
+//        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(30000);
+//        boost::mutex::scoped_lock lck(mx);
+//        while (strCellId.length() == 0)
+//        {
+//            if (!sync.timed_wait(lck, timeout))
+//            {
+//                return NULL;
+//            }
+//        }
+//        
+//        return strCellId.c_str();
+//    }
+    
+    const char* getCellId()
+    {
+        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(500);
+        boost::mutex::scoped_lock lck(mx);
+        while (this->cellId.length() == 0)
+        {
+            if (!sync.timed_wait(lck, timeout))
+            {
+                return NULL;
+            }
+        }
+        
+        char* data = new char[this->cellId.size() + 1];
+        std::copy(this->cellId.begin(), this->cellId.end(), data);
+        data[this->cellId.size()] = '\0';
+        return data;
+    }
+};
+
+class ATIDialog : public Dialog
+{
+private:
+//    boost::mutex mx;
+//    boost::condition_variable sync;
     
     int appId;
     int localId;
@@ -78,6 +139,8 @@ private:
     
     string strCellId;
     
+    ATIDelegate* delegate;
+    
 public:
     static U8 REMOTE_GT_SSN;
     
@@ -86,6 +149,7 @@ public:
               PutGBlockQueue* putGBlockQueue,
               Executor* dialogTaskService,
               AppClient* appClient,
+              ATIDelegate* delegate,
               // 
               Id* idIE,
               string& name,
@@ -103,6 +167,7 @@ public:
         this->putGBlockQueue = putGBlockQueue;
         this->dialogTaskService = dialogTaskService;
         this->appClient = appClient;
+        this->delegate = delegate;
         //
         this->idIE = idIE;
         this->name = name;
@@ -165,7 +230,8 @@ public:
                 
                 cout<<">>>>> "<<tmpCellGlobalId.getCellGlobalId().c_str()<<endl;
                 string tmpStr = tmpCellGlobalId.getCellGlobalId();
-                setCellId(tmpStr);
+                delegate->setCellId(tmpStr);
+//                setCellId(tmpStr);
 //                string str ("234");
 //                setCellId(str);
                 //cfMessageQueue.push(new AnytimeInterrogationRet(idIE, tmpCellID));
@@ -262,33 +328,33 @@ public:
         }
     }
     
-    void setCellId(string& cellId)
-    {
-        boost::mutex::scoped_lock lck(mx);
-        strCellId.assign(cellId.c_str());
-        sync.notify_all();
-        
-    }
+//    void setCellId(string& cellId)
+//    {
+//        boost::mutex::scoped_lock lck(mx);
+//        strCellId.assign(cellId.c_str());
+//        sync.notify_all();
+//        
+//    }
     
     /**
      * Get and wait cell id, 
      * 
      * @param cellId cell id reference.
      */
-    const char* getCellId()
-    {
-        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(30000);
-        boost::mutex::scoped_lock lck(mx);
-        while (strCellId.length() == 0)
-        {
-            if (!sync.timed_wait(lck, timeout))
-            {
-                return NULL;
-            }
-        }
-        
-        return strCellId.c_str();
-    }
+//    const char* getCellId()
+//    {
+//        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(30000);
+//        boost::mutex::scoped_lock lck(mx);
+//        while (strCellId.length() == 0)
+//        {
+//            if (!sync.timed_wait(lck, timeout))
+//            {
+//                return NULL;
+//            }
+//        }
+//        
+//        return strCellId.c_str();
+//    }
 };
 
 // Default ssn for remote GT

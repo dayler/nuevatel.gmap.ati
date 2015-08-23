@@ -144,11 +144,13 @@ public:
         cout<<"[2]"<<endl;
         string name = msg->getString(CFIE::SUBSCRIBER_NAME_IE);
         cout<<"[3]"<<endl;
+        ATIDelegate delegate;
         ATIDialog* dialog = new ATIDialog(appId,
                                           localId,
                                           putBlockQueue,
                                           dialogTaskService,
                                           appClient,
+                                          &delegate,
                                           // 
                                           &id,
                                           name,
@@ -165,9 +167,12 @@ public:
         dialog->init();
         cout<<"[5]"<<endl;
         //dialogMap->put(dialog);
-        cout<<"[dialog->getCellId...]"<<endl;
-        const char* rawCellId = dialog->getCellId();
-        cout<<"[...dialog->getCellId]->"<<rawCellId<<endl;
+        // TODO 
+//        cout<<"[dialog->getCellId...]"<<endl;
+//        const char* rawCellId = dialog->getCellId();
+//        cout<<"[...dialog->getCellId]->"<<rawCellId<<endl;
+//        return AnytimeInterrogationRet(NULL, rawCellId).toMessage();
+        const char* rawCellId = delegate.getCellId();
         return AnytimeInterrogationRet(NULL, rawCellId).toMessage();
     }
 };
