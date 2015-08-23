@@ -12,6 +12,9 @@
 #include "../../base/appconn/appclient.hpp"
 #include "gmapapp.hpp"
 
+/**
+ * Delegate, used to return cell id.
+ */
 class ATIDelegate
 {
 private:
@@ -39,21 +42,6 @@ public:
         sync.notify_all();
     }
     
-//    const char* getCellId()
-//    {
-//        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(30000);
-//        boost::mutex::scoped_lock lck(mx);
-//        while (strCellId.length() == 0)
-//        {
-//            if (!sync.timed_wait(lck, timeout))
-//            {
-//                return NULL;
-//            }
-//        }
-//        
-//        return strCellId.c_str();
-//    }
-    
     const char* getCellId()
     {
         boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(500);
@@ -76,8 +64,6 @@ public:
 class ATIDialog : public Dialog
 {
 private:
-//    boost::mutex mx;
-//    boost::condition_variable sync;
     
     int appId;
     int localId;
@@ -231,11 +217,6 @@ public:
                 cout<<">>>>> "<<tmpCellGlobalId.getCellGlobalId().c_str()<<endl;
                 string tmpStr = tmpCellGlobalId.getCellGlobalId();
                 delegate->setCellId(tmpStr);
-//                setCellId(tmpStr);
-//                string str ("234");
-//                setCellId(str);
-                //cfMessageQueue.push(new AnytimeInterrogationRet(idIE, tmpCellID));
-                // Set state
                 setState(INVOKE);
                 // submit to task service
                 dialogTaskService->submit(new DialogTask(this));
@@ -305,7 +286,7 @@ public:
         }
     }
     
-        /**
+    /**
      * Compares two objectIDs.
      * @param *id1 ObjectID
      * @param *id2 ObjectID
@@ -327,34 +308,6 @@ public:
             return false;
         }
     }
-    
-//    void setCellId(string& cellId)
-//    {
-//        boost::mutex::scoped_lock lck(mx);
-//        strCellId.assign(cellId.c_str());
-//        sync.notify_all();
-//        
-//    }
-    
-    /**
-     * Get and wait cell id, 
-     * 
-     * @param cellId cell id reference.
-     */
-//    const char* getCellId()
-//    {
-//        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(30000);
-//        boost::mutex::scoped_lock lck(mx);
-//        while (strCellId.length() == 0)
-//        {
-//            if (!sync.timed_wait(lck, timeout))
-//            {
-//                return NULL;
-//            }
-//        }
-//        
-//        return strCellId.c_str();
-//    }
 };
 
 // Default ssn for remote GT

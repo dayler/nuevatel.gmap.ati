@@ -139,11 +139,8 @@ public:
         
         Id id(idIE);
         cout<<"*************** "<<id.getId1()<< " ***************"<<endl;
-        cout<<"[1]"<<endl;
         char type = msg->getByte(CFIE::TYPE_IE);
-        cout<<"[2]"<<endl;
         string name = msg->getString(CFIE::SUBSCRIBER_NAME_IE);
-        cout<<"[3]"<<endl;
         ATIDelegate delegate;
         ATIDialog* dialog = new ATIDialog(appId,
                                           localId,
@@ -162,16 +159,8 @@ public:
                                           remotePC,
                                           remoteMSISDN,
                                           remoteMSISDNType);
-        cout<<"[4]"<<endl;
         // dispatch blocks
         dialog->init();
-        cout<<"[5]"<<endl;
-        //dialogMap->put(dialog);
-        // TODO 
-//        cout<<"[dialog->getCellId...]"<<endl;
-//        const char* rawCellId = dialog->getCellId();
-//        cout<<"[...dialog->getCellId]->"<<rawCellId<<endl;
-//        return AnytimeInterrogationRet(NULL, rawCellId).toMessage();
         const char* rawCellId = delegate.getCellId();
         return AnytimeInterrogationRet(NULL, rawCellId).toMessage();
     }
