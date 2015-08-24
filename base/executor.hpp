@@ -56,7 +56,6 @@ public:
             if(tmpThread->getState()==Thread::TERMINATED) {
                 delete tmpThread;
                 threadVector.at(threadIndex)=thread;
-                std::cout<<"A[executor#threadVector#size]="<<threadVector.size()<<std::endl;
                 thread->start();
                 if(++threadIndex==threadVector.size()) threadIndex=0;
                 return;
@@ -65,7 +64,6 @@ public:
         }
         threadVector.push_back(thread);
         threadIndex=0;
-        std::cout<<"B[executor#threadVector#size]="<<threadVector.size()<<std::endl;
         thread->start();
     }
 

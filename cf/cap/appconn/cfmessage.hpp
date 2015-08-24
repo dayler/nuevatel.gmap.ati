@@ -446,46 +446,30 @@ public:
 class AnytimeInterrogationRet : public CFMessage
 {
 private:
-    /**
-     * It was inserted from client, its live cycle i defines by the message. The pointer must to
-     * destroy in this class.
-     */
-    Id* id;
     string cellId;
     char ret;
     
 public:
-    AnytimeInterrogationRet(Id* id, const char* rawCellId)
+    AnytimeInterrogationRet(const char* rawCellId)
     {
-        this->id = id;
         cellId.assign(rawCellId);
         ret = AppMessages::ACCEPTED;
     }
     
     AnytimeInterrogationRet(const int& ret)
     {
-        id = NULL;
-        //cellId = "";
         this->ret = ret;
     }
     
     ~AnytimeInterrogationRet()
     {
-        if (id != NULL)
-        {
-            delete id;
-        }
+        // No op
     }
     
 
     Message* toMessage()
     {
         vector<IE*>ies;
-        // ID
-        if (id != NULL)
-        {
-            ies.push_back(id->toIE());
-        }
         
         ByteIE retIE(AppMessages::RET_IE, ret);
         ies.push_back(&retIE);
@@ -504,9 +488,5 @@ public:
         return msg;
     }
 };
-
-//class AnytimeInterrogationCall : public CFMessage
-//{
-//};
 
 #endif	/* CFMESSAGE_HPP */

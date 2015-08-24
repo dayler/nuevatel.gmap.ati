@@ -137,8 +137,8 @@ public:
             return AnytimeInterrogationRet(AppMessages::FAILED).toMessage();
         }
         
-        Id id(idIE);
-        cout<<"*************** "<<id.getId1()<< " ***************"<<endl;
+        Id* id = new Id(idIE);
+        cout<<"*************** "<<id->getId1()<< " ***************"<<endl;
         char type = msg->getByte(CFIE::TYPE_IE);
         string name = msg->getString(CFIE::SUBSCRIBER_NAME_IE);
         ATIDelegate delegate;
@@ -149,7 +149,7 @@ public:
                                           appClient,
                                           &delegate,
                                           // 
-                                          &id,
+                                          id,
                                           name,
                                           type,
                                           mapInit->ssn,
@@ -162,7 +162,8 @@ public:
         // dispatch blocks
         dialog->init();
         const char* rawCellId = delegate.getCellId();
-        return AnytimeInterrogationRet(NULL, rawCellId).toMessage();
+        
+        return AnytimeInterrogationRet(rawCellId).toMessage();
     }
 };
 
