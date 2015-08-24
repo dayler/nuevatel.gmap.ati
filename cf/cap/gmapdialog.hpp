@@ -156,6 +156,8 @@ public:
         this->delegate = delegate;
         //
         this->idIE = idIE;
+        // Set tmp dialog ID, is is used in case the dialog is killed.
+        setDialogId(this->idIE->getId1());
         this->name = name;
         this->type = type;
         this->localSSN = localSSN;
