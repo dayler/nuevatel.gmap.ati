@@ -1102,6 +1102,16 @@ public:
 class AnytimeInterrogationReqBlock : public GBlock
 {
 private:
+    /**
+     * name is MSISDN
+     */
+    static int TYPE_MSISDN;
+    
+    /**
+     * name is IMSI
+     */
+    static int TYPE_IMSI;
+    
     string name;
     unsigned char type;
     string serviceCentreAddress;
@@ -1126,10 +1136,26 @@ public:
         int tmpIMSILength = 32;
         unsigned char tmpIMSI[32];
         getSemiOctet(name, tmpIMSI, tmpIMSILength);
-        gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_imsi_chosen; // Select IMSI
-        gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILength;
-        memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.value, tmpIMSI, tmpIMSILength);
-        gb->parameter.anyTimeInterrogationArg_v3.requestedInfo.bit_mask = RequestedInfo_locationInformation_present;
+        
+        if (TYPE_MSISDN == type)
+        {
+            cout<<"------------------- TYPE_MSISDN"<<endl;
+            gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_msisdn_chosen; // Select MSISDN
+            gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.msisdn.length = tmpIMSILength;
+//            gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILength;
+            memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.msisdn.value, tmpIMSI, tmpIMSILength);
+//            memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.value, tmpIMSI, tmpIMSILength);
+            gb->parameter.anyTimeInterrogationArg_v3.requestedInfo.bit_mask = RequestedInfo_locationInformation_present;
+        }
+        else
+        {
+            cout<<"------------------- TYPE_IMSI"<<endl;
+            gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_imsi_chosen; // Select IMSI
+            gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILength;
+            memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.value, tmpIMSI, tmpIMSILength);
+            gb->parameter.anyTimeInterrogationArg_v3.requestedInfo.bit_mask = RequestedInfo_locationInformation_present;
+        }
+        
         // Set service sentre address
         int scaLength = 32;
         unsigned char scAddr[32];
@@ -1138,5 +1164,8 @@ public:
         memcpy(gb->parameter.anyTimeInterrogationArg_v3.gsmSCF_Address.value, scAddr, scaLength);
     }
 };
+
+int AnytimeInterrogationReqBlock::TYPE_MSISDN = 0x1;
+int AnytimeInterrogationReqBlock::TYPE_IMSI = 0x2;
 
 #endif	/* BLOCK_HPP_01 */

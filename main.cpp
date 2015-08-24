@@ -4,7 +4,7 @@
  *
  * Created on July 28, 2015, 6:22 PM
  */
-#include "cf/cap/gmapapp.hpp"
+#include "cf/map/gmapapp.hpp"
 
 #include <cstdlib>
 #include <iostream>

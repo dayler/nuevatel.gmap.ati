@@ -26,16 +26,16 @@
         <itemPath>base/utils.hpp</itemPath>
       </logicalFolder>
       <logicalFolder name="cf" displayName="cf" projectFiles="true">
-        <logicalFolder name="cap" displayName="cap" projectFiles="true">
+        <logicalFolder name="map" displayName="map" projectFiles="true">
           <logicalFolder name="appconn" displayName="appconn" projectFiles="true">
-            <itemPath>cf/cap/appconn/cfie.hpp</itemPath>
-            <itemPath>cf/cap/appconn/cfmessage.hpp</itemPath>
+            <itemPath>cf/map/appconn/cfie.hpp</itemPath>
+            <itemPath>cf/map/appconn/cfmessage.hpp</itemPath>
           </logicalFolder>
-          <itemPath>cf/cap/block.hpp</itemPath>
-          <itemPath>cf/cap/cftask.hpp</itemPath>
-          <itemPath>cf/cap/dialog.hpp</itemPath>
-          <itemPath>cf/cap/gmapapp.hpp</itemPath>
-          <itemPath>cf/cap/gmapdialog.hpp</itemPath>
+          <itemPath>cf/map/block.hpp</itemPath>
+          <itemPath>cf/map/cftask.hpp</itemPath>
+          <itemPath>cf/map/dialog.hpp</itemPath>
+          <itemPath>cf/map/gmapapp.hpp</itemPath>
+          <itemPath>cf/map/gmapdialog.hpp</itemPath>
         </logicalFolder>
       </logicalFolder>
     </logicalFolder>
@@ -131,19 +131,19 @@
       </item>
       <item path="base/utils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/appconn/cfie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/appconn/cfie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/appconn/cfmessage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/appconn/cfmessage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/block.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/block.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/cftask.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/cftask.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/dialog.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/dialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/gmapapp.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/gmapapp.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/gmapdialog.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/gmapdialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -209,19 +209,19 @@
       </item>
       <item path="base/utils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/appconn/cfie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/appconn/cfie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/appconn/cfmessage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/appconn/cfmessage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/block.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/block.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/cftask.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/cftask.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/dialog.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/dialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/gmapapp.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/gmapapp.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="cf/cap/gmapdialog.hpp" ex="false" tool="3" flavor2="0">
+      <item path="cf/map/gmapdialog.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

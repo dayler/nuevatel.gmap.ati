@@ -79,15 +79,6 @@ private:
     MAP_Init* mapInit;
     
 public:
-    /**
-     * name is MSISDN
-     */
-    static int TYPE_MSISDN;
-    
-    /**
-     * name is IMSI
-     */
-    static int TYPE_IMSI;
     
     AnytimeInterrogationCall(DialogMap *dialogMap,
                              MAP_Init* mapInit,
@@ -161,7 +152,6 @@ public:
         // dispatch blocks
         dialog->init();
         const char* rawCellId = delegate.getCellId();
-        
         if (std::strcmp("0000000000", rawCellId) == 0)
         {
             // no found cell id for unit
@@ -171,8 +161,5 @@ public:
         return AnytimeInterrogationRet(rawCellId).toMessage();
     }
 };
-
-int AnytimeInterrogationCall::TYPE_MSISDN = 0x1;
-int AnytimeInterrogationCall::TYPE_IMSI = 0x2;
 
 #endif	/* CFTASK_HPP */
