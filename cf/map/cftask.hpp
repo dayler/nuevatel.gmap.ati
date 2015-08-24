@@ -152,7 +152,7 @@ public:
         // dispatch blocks
         dialog->init();
         const char* rawCellId = delegate.getCellId();
-        if (std::strcmp("0000000000", rawCellId) == 0)
+        if (std::strcmp(ATIDelegate::NULL_CELL_ID, rawCellId) == 0)
         {
             // no found cell id for unit
             return AnytimeInterrogationRet(AppMessages::FAILED).toMessage();

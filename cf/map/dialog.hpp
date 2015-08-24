@@ -5,6 +5,7 @@
 #define	DIALOG_HPP
 
 #include "../../base/timer.hpp"
+#include "../../base/logger.hpp"
 
 #include <cstdlib>
 #include <stdio.h>
@@ -31,6 +32,8 @@
 #include <gmap.h>
 
 #include <time.h>
+
+using namespace logging;
 
 /**
  * <p>The Dialog abstract class.</p>
@@ -413,6 +416,9 @@ private:
         }
         time_t checkTime;
         time(&checkTime);
+        // For information purpose, used to count deleted objects.
+        int count = 0;
+        
         for (std::map<int, Dialog*>::iterator iter = tmpDialogMap.begin(); iter != tmpDialogMap.end(); iter++)
         {
             Dialog *dialog = iter->second;
@@ -423,6 +429,8 @@ private:
                     dialog->getState() == Dialog::KILL_1)
                 {
                     remove(iter->first);
+                    // For information purpose, used to count deleted objects.
+                    count++;
                 }
                 else
                 {
@@ -435,6 +443,9 @@ private:
                 }
             }
         }
+        std::stringstream ss;
+        ss<<count<<" Objects was deleted...";
+        Logger::getLogger()->logp(&Level::INFO, "DialogMap", "check", ss.str());
     }
 
     /**

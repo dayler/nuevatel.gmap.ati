@@ -24,6 +24,8 @@ private:
     string cellId;
     
 public:
+    static char* NULL_CELL_ID;
+    
     ATIDelegate()
     {
         // No op
@@ -43,13 +45,13 @@ public:
     
     const char* getCellId()
     {
-        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(500);
+        boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(1000);
         boost::mutex::scoped_lock lck(mx);
         while (this->cellId.length() == 0)
         {
             if (!sync.timed_wait(lck, timeout))
             {
-                return NULL;
+                return NULL_CELL_ID;
             }
         }
         
@@ -59,6 +61,8 @@ public:
         return data;
     }
 };
+
+char* ATIDelegate::NULL_CELL_ID = "0000000000";
 
 /**
  * Dialog to make AnytimeInterrogation Map call. REF (GPP TS 09.02 version 7.15.0 Release 1998)
@@ -174,7 +178,6 @@ public:
     
     ~ATIDialog()
     {
-        cout<<"~ATIDialog"<<endl;
         if (idIE != NULL)
         {
             delete idIE;
@@ -207,6 +210,9 @@ public:
     
     void handle(gblock_t* gb)
     {
+//        cout<<"--------------------------"<<endl;
+//        gMAPPrintGBlock(gb);
+//        cout<<"--------------------------"<<endl;
         if (gb->serviceType == GMAP_RSP)
         {
             if (gb->serviceMsg == GMAP_OPEN)
@@ -221,6 +227,15 @@ public:
                 msg <<"ATI Ret CellId: "<<tmpCellGlobalId.getCellGlobalId().c_str();
                 Logger::getLogger()->getLogger()->logp(&Level::INFO, "ATIDialog", "handle", msg.str());
                 string tmpStr = tmpCellGlobalId.getCellGlobalId();
+                delegate->setCellId(tmpStr);
+                setState(INVOKE);
+                // submit to task service
+                dialogTaskService->submit(new DialogTask(this));
+            }
+            else if (gb->serviceMsg == UNKNOWN_SUBSCRIBER)
+            {
+                // Unknown subscriber, malformed IMSI, malformed MSISDN
+                string tmpStr = ATIDelegate::NULL_CELL_ID;
                 delegate->setCellId(tmpStr);
                 setState(INVOKE);
                 // submit to task service
