@@ -31,7 +31,6 @@ public:
     
     ~ATIDelegate()
     {
-        cout<<"~ATIDelegate"<<endl;
         // No op
     }
     
@@ -61,6 +60,9 @@ public:
     }
 };
 
+/**
+ * Dialog to make AnytimeInterrogation Map call. REF (GPP TS 09.02 version 7.15.0 Release 1998)
+ */
 class ATIDialog : public Dialog
 {
 private:
@@ -211,12 +213,13 @@ public:
             {
                 setState(W_INVOKE);
             }
-            else if (gb->serviceMsg == ANY_TIME_INTERROGATION) // ANY_TIME_INTERROGATION
+            else if (gb->serviceMsg == ANY_TIME_INTERROGATION)
             {
                 CellGlobalId tmpCellGlobalId((char*)gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.value,
                                              gb->parameter.anyTimeInterrogationRes_v3.subscriberInfo.locationInformation.cellGlobalIdOrServiceAreaIdOrLAI.u.cellGlobalIdOrServiceAreaIdFixedLength.length);
-                
-                cout<<">>>>> "<<tmpCellGlobalId.getCellGlobalId().c_str()<<endl;
+                stringstream msg;
+                msg <<"ATI Ret CellId: "<<tmpCellGlobalId.getCellGlobalId().c_str();
+                Logger::getLogger()->getLogger()->logp(&Level::INFO, "ATIDialog", "handle", msg.str());
                 string tmpStr = tmpCellGlobalId.getCellGlobalId();
                 delegate->setCellId(tmpStr);
                 setState(INVOKE);
@@ -246,21 +249,7 @@ public:
     
     void run()
     {
-        cout<<"ATIDialog#run"<<endl;
-//        CFMessage* cfMessage = cfMessageQueue.waitAndPop();
-//        Message* msg = cfMessage->toMessage();
-//        Message* ret = NULL;
-//        
-//        try
-//        {
-//            ret = appClient->dispatch(msg);
-//        }
-//        catch(Exception ex)
-//        {
-//            Logger::getLogger()->logp(&Level::WARNING, "GMAP Dialog", "run", ex.toString());
-//        }
-        
-        // Dialog ready to close
+        // No actions it is ready to close dialog.
         setState(W_CLOSE_1);
     }
     
@@ -276,7 +265,7 @@ public:
         }
         else if (getState() == W_CLOSE_1)
         {
-            // putGBlockQueue->push(new CloseReqBlock(this));
+            putGBlockQueue->push(new CloseReqBlock(this));
         }
         else if (getState() == ABORT_0)
         {
@@ -284,7 +273,7 @@ public:
         }
         else if (getState() == KILL_0)
         {
-            // putGBlockQueue->push(new CloseReqBlock(this));
+            putGBlockQueue->push(new CloseReqBlock(this));
         }
     }
     

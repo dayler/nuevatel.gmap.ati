@@ -138,7 +138,6 @@ public:
         }
         
         Id* id = new Id(idIE);
-        cout<<"*************** "<<id->getId1()<< " ***************"<<endl;
         char type = msg->getByte(CFIE::TYPE_IE);
         string name = msg->getString(CFIE::SUBSCRIBER_NAME_IE);
         ATIDelegate delegate;

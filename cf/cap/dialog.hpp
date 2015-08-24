@@ -295,10 +295,10 @@ private:
 
     void run()
     {
-        std::cout<<"DialogTask#run"<<std::endl;
         dialog->run();
     }
 };
+
 /**
  * <p>The DialogMap class.</p>
  * <p>Nuevatel PCS de Bolivia S.A. (c) 2013</p>
@@ -370,27 +370,18 @@ public:
      */
     void put(Dialog *dialog)
     {
-        std::cout<<"put->1"<<std::endl;
         if (dialog != NULL)
         {
-            std::cout<<"put->2"<<std::endl;
             boost::lock_guard<boost::mutex> lock(dialogMapMutex);
-            std::cout<<"put->3"<<std::endl;
             std::map<int, Dialog*>::iterator iter = dialogMap.find(dialog->getDialogId());
-            std::cout<<"put->4"<<std::endl;
             if (iter != dialogMap.end())
             {
-                std::cout<<"put->5"<<std::endl;
                 // if already exists
                 delete iter->second;
-                std::cout<<"put->6"<<std::endl;
                 dialogMap.erase(iter);
             }
-            std::cout<<"put->7"<<std::endl;
             dialogMap.insert(std::pair<int, Dialog*>(dialog->getDialogId(), dialog));
-            std::cout<<"put->8"<<std::endl;
         }
-        std::cout<<"put->9"<<std::endl;
     }
 
     /**
