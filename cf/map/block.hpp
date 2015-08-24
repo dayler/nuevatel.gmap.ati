@@ -1102,6 +1102,8 @@ public:
 class AnytimeInterrogationReqBlock : public GBlock
 {
 private:
+    static int REMOTE_MSISDN_TYPE;
+    
     /**
      * name is MSISDN
      */
@@ -1116,7 +1118,7 @@ private:
     unsigned char type;
     string serviceCentreAddress;
     unsigned char serviceCentreAddressType;
-
+    
 public:
     AnytimeInterrogationReqBlock(Dialog* dialog,
                                  const string& name,
@@ -1133,23 +1135,21 @@ public:
     void getGBlock(gblock_t* gb)
     {
         GBlock::getGBlock(gb);
-        int tmpIMSILength = 32;
-        unsigned char tmpIMSI[32];
-        getSemiOctet(name, tmpIMSI, tmpIMSILength);
-        
         if (TYPE_MSISDN == type)
         {
-            cout<<"------------------- TYPE_MSISDN"<<endl;
+            int tmpMSISDNLength = 32;
+            unsigned char tmpMSISDN[32];
+            getAddress(name, REMOTE_MSISDN_TYPE, tmpMSISDN, tmpMSISDNLength);
             gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_msisdn_chosen; // Select MSISDN
-            gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.msisdn.length = tmpIMSILength;
-//            gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILength;
-            memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.msisdn.value, tmpIMSI, tmpIMSILength);
-//            memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.value, tmpIMSI, tmpIMSILength);
+            gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.msisdn.length = tmpMSISDNLength;
+            memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.msisdn.value, tmpMSISDN, tmpMSISDNLength);
             gb->parameter.anyTimeInterrogationArg_v3.requestedInfo.bit_mask = RequestedInfo_locationInformation_present;
         }
         else
         {
-            cout<<"------------------- TYPE_IMSI"<<endl;
+            int tmpIMSILength = 32;
+            unsigned char tmpIMSI[32];
+            getSemiOctet(name, tmpIMSI, tmpIMSILength);
             gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.choice = SubscriberIdentity_imsi_chosen; // Select IMSI
             gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.length = tmpIMSILength;
             memcpy(gb->parameter.anyTimeInterrogationArg_v3.subscriberIdentity.u.imsi.value, tmpIMSI, tmpIMSILength);
@@ -1167,5 +1167,7 @@ public:
 
 int AnytimeInterrogationReqBlock::TYPE_MSISDN = 0x1;
 int AnytimeInterrogationReqBlock::TYPE_IMSI = 0x2;
+
+int AnytimeInterrogationReqBlock::REMOTE_MSISDN_TYPE = 0x91;
 
 #endif	/* BLOCK_HPP_01 */
